@@ -70,12 +70,13 @@
             } else {
                 if ($order_status === 'abandoned_cart') {
                     $sequence_table_name = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+                    
                     $wpdb->delete($sequence_table_name, ['trigger_id' => $trigger_id]);
 
                     if (!empty($_POST['sequence'])) {
-                        $sequence_items = $_POST['sequence'];
+                        $sequence_items_data = $_POST['sequence'];
                         $sequence_order = 0;
-                        foreach ($sequence_items as $item) {
+                        foreach ($sequence_items_data as $item) {
                             $sequence_order++;
                             $time_interval = intval($item['time_interval']);
                             $time_unit = sanitize_text_field($item['time_unit']);
@@ -90,7 +91,7 @@
                                 }
                             }
 
-                            $wpdb->insert($sequence_table_name, [
+                            $insert_data = [
                                 'trigger_id' => $trigger_id,
                                 'time_interval' => $time_interval,
                                 'time_unit' => $time_unit,
@@ -98,7 +99,8 @@
                                 'message_template_name' => $template_name_seq,
                                 'variable_mappings' => $variable_mappings_seq,
                                 'sequence_order' => $sequence_order,
-                            ]);
+                            ];
+                            $wpdb->insert($sequence_table_name, $insert_data);
                         }
                     }
                 }
@@ -479,6 +481,7 @@
         const allTemplates = <?php echo json_encode($templates); ?>;
         const savedTrigger = <?php echo $trigger ? json_encode($trigger) : 'null'; ?>;
         const savedSequenceItems = <?php echo json_encode($sequence_items); ?>;
+        
         const availableVariables = {
             'order_id': 'Order ID', 'order_total': 'Order Total', 'customer_name': 'Customer Name',
             'billing_first_name': 'Billing First Name', 'billing_last_name': 'Billing Last Name',
@@ -510,7 +513,6 @@
 
             let metadata = null;
             if (selectedTemplate && selectedTemplate.metadata) {
-                 // The metadata from PHP is already a JSON string, so it needs to be parsed.
                 try {
                     metadata = typeof selectedTemplate.metadata === 'string' ? JSON.parse(selectedTemplate.metadata) : selectedTemplate.metadata;
                 } catch(e) {
@@ -625,11 +627,18 @@
             const newSelect = $(`#sequence_items_container .sequence-item[data-index=${sequenceIndex}] .sequence-template`);
             if (itemData) {
                 updateTemplateUI(newSelect);
-                const mappings = itemData.variable_mappings ? JSON.parse(itemData.variable_mappings) : null;
+                let mappings = null;
+                try {
+                    mappings = itemData.variable_mappings ? JSON.parse(itemData.variable_mappings) : null;
+                } catch(e) {
+                    // console.error("Failed to parse mappings from itemData", e);
+                }
+                
                 if(mappings) {
                     for (const [part, vars] of Object.entries(mappings)) {
                         for (const [varNum, varName] of Object.entries(vars)) {
-                           newSelect.closest('.sequence-item').find(`select[name="sequence[${sequenceIndex}][variable_mapping][${part}][${varNum}]"]`).val(varName);
+                           const selector = `select[name="sequence[${sequenceIndex}][variable_mapping][${part}][${varNum}]"]`;
+                           newSelect.closest('.sequence-item').find(selector).val(varName);
                         }
                     }
                 }

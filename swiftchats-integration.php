@@ -19,7 +19,7 @@ if (! defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('SWIFTCHATS_WC_VERSION', '1.0.0');
+define('SWIFTCHATS_WC_VERSION', '1.0.1');
 define('SWIFTCHATS_WC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SWIFTCHATS_WC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SWIFTCHATSWC_API_BASE_URL', 'https://app.wbjet.com');
