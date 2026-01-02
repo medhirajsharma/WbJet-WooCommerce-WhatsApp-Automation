@@ -1,0 +1,121 @@
+.swiftchats-widget {
+    position: fixed;
+    bottom: 24px;
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+.swiftchats-widget.right {
+    right: 24px;
+}
+
+.swiftchats-widget.left {
+    left: 24px;
+}
+
+.swiftchats-widget-button {
+    display: block;
+    text-decoration: none;
+    position: relative;
+}
+
+.swiftchats-widget-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: #25D366;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.swiftchats-widget-icon {
+    width: 32px;
+    height: 32px;
+    color: white;
+}
+
+.swiftchats-widget-tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    bottom: 100%;
+    margin-bottom: 12px;
+}
+
+.swiftchats-widget.right .swiftchats-widget-tooltip {
+    right: 0;
+    transform: translateX(10px);
+}
+
+.swiftchats-widget.left .swiftchats-widget-tooltip {
+    left: 0;
+    transform: translateX(-10px);
+}
+
+.swiftchats-widget-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #333;
+}
+
+.swiftchats-widget.right .swiftchats-widget-tooltip::after {
+    right: 24px;
+}
+
+.swiftchats-widget.left .swiftchats-widget-tooltip::after {
+    left: 24px;
+}
+
+/* Hover effects */
+.swiftchats-widget-button:hover .swiftchats-widget-icon-wrapper {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.swiftchats-widget-button:hover .swiftchats-widget-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .swiftchats-widget {
+        bottom: 16px;
+    }
+    
+    .swiftchats-widget.right {
+        right: 16px;
+    }
+    
+    .swiftchats-widget.left {
+        left: 16px;
+    }
+    
+    .swiftchats-widget-icon-wrapper {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .swiftchats-widget-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .swiftchats-widget-tooltip {
+        display: none;
+    }
+} 

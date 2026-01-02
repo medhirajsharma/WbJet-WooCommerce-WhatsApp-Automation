@@ -1,0 +1,44 @@
+/* Additional styles for specific components */
+.custom-hours {
+    display: none;
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.swiftchats-tooltip {
+    color: #666;
+    cursor: help;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 782px) {
+    .swiftchats-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .header-main {
+        flex-direction: column;
+    }
+
+    .nav-tab-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .nav-tab {
+        flex: 1 1 auto;
+        text-align: center;
+        margin: 2px;
+    }
+
+    .field-group input[type="text"],
+    .field-group input[type="password"],
+    .field-group select,
+    .field-group textarea {
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,186 @@
+#copyButton::before {
+    content: "\f0c5";
+    /* Font Awesome icon code for copy */
+    font-family: 'Font Awesome 5 Free';
+    margin-right: 8px;
+    font-weight: 900;
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0px auto;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    
+
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+}
+
+.result-group {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+}
+
+textarea {
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #00949C;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom:10px !important;
+    font-family: var(--e-global-typography-e68ffe6-font-family), Sans-serif !important;
+       font-size: 18px !important;
+    font-weight:600;
+}
+
+button {
+    display: flex;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px !important;
+    background-color: #00949C;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button i {
+    margin-right: 8px;
+}
+
+.loading-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.loading-bar-progress {
+    height: 100%;
+    width: 0;
+    background-color: #00949C;
+    border-radius: 10px;
+    animation: loading 6s linear infinite;
+}
+
+@keyframes loading {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+#loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.description-output {
+    white-space: pre-wrap;
+    /* This preserves white space and line breaks */
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #00949C;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    overflow-y: auto;
+    font-family: var(--e-global-typography-e68ffe6-font-family), Sans-serif !important;
+       font-size: 18px !important;
+    font-weight:600;
+}
+
+h3 {
+    font-size: 20px;
+    font-family: var(--e-global-typography-e68ffe6-font-family), Sans-serif !important;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h2 {
+    align-items: center;
+    font-size: 30px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+
+
+
+
+.description-box {
+    position: relative;
+    /* Ensure the position context for absolute positioning */
+    border: 1px solid #00949C;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    /* Add cursor pointer to indicate it's clickable */
+}
+
+.description-box h3 {
+    font-size: 18px;
+    padding-right: 20px;
+    margin: 0;
+    color: #333;
+    margin-right: 15px;
+}
+
+.description-box p {
+    font-size: 18px;
+    margin: 5px 0 0 0;
+    color: #555;
+    font-weight:600;
+}
+
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 0px 5px 5px;
+}
+
+.copy-button i {
+    color: #00949C !important;
+    font-size: 15px;
+    color: #555;
+}
+#descriptionContainer {
+display: flex;
+grid-template-columns: 1fr 1fr !important;
+gap: 10px;
+flex-wrap: wrap;
+flex-direction: row;
+}
