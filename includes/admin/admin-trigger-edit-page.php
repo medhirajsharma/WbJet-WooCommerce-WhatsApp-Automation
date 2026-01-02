@@ -477,7 +477,7 @@
 
         // --- GLOBAL DATA ---
         const allTemplates = <?php echo json_encode($templates); ?>;
-        const savedTrigger = <?php echo json_encode($trigger); ?>;
+        const savedTrigger = <?php echo $trigger ? json_encode($trigger) : 'null'; ?>;
         const savedSequenceItems = <?php echo json_encode($sequence_items); ?>;
         const availableVariables = {
             'order_id': 'Order ID', 'order_total': 'Order Total', 'customer_name': 'Customer Name',
@@ -504,21 +504,21 @@
         // --- TEMPLATE PREVIEW & VARIABLE MAPPING ---
         function updateTemplateUI(templateSelect) {
             if (!templateSelect.length) return;
+            
+            const selectedUuid = templateSelect.val();
+            const selectedTemplate = allTemplates.find(t => t.uuid === selectedUuid);
 
-            const selectedOption = templateSelect.find('option:selected');
-            const metadataString = selectedOption.attr('data-metadata');
             let metadata = null;
-            if (metadataString) {
+            if (selectedTemplate && selectedTemplate.metadata) {
+                 // The metadata from PHP is already a JSON string, so it needs to be parsed.
                 try {
-                    metadata = JSON.parse(metadataString);
-                } catch (e) {
-                    console.error("Failed to parse template metadata:", e, metadataString);
-                    metadata = null;
+                    metadata = typeof selectedTemplate.metadata === 'string' ? JSON.parse(selectedTemplate.metadata) : selectedTemplate.metadata;
+                } catch(e) {
+                    console.error("Failed to parse metadata from template object:", e);
                 }
             }
             
             const previewDiv = $('#wa-chat-messages');
-
             const isSequence = templateSelect.hasClass('sequence-template');
             const variableContainer = isSequence
                 ? templateSelect.closest('.sequence-item').find('.sequence-variable-mappings')
@@ -527,7 +527,7 @@
             variableContainer.html('');
             if (!isSequence) $('#template_variables').hide();
 
-            if (!metadata) {
+            if (!metadata || !metadata.components) {
                 previewDiv.html('<p class="no-template-selected">Select a template to see its preview</p>');
                 return;
             }
@@ -594,11 +594,9 @@
             sequenceIndex++;
             let optionsHtml = '<option value="">Select Template</option>';
             allTemplates.forEach(template => {
-                if (!template.metadata) return;
+                if (!template.uuid || !template.name) return;
                 const isSelected = itemData && itemData.message_template_id === template.uuid;
-                const metadataJson = JSON.stringify(template.metadata).replace(/"/g, '&quot;');
-                const metadataAttribute = `data-metadata="${metadataJson}"`;
-                optionsHtml += `<option value="${template.uuid}" ${isSelected ? 'selected' : ''} ${metadataAttribute}>${template.name}</option>`;
+                optionsHtml += `<option value="${template.uuid}" ${isSelected ? 'selected' : ''}>${template.name}</option>`;
             });
 
             const timeInterval = itemData ? itemData.time_interval : '';
