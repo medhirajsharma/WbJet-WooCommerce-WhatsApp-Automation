@@ -507,7 +507,16 @@
 
             const selectedOption = templateSelect.find('option:selected');
             const metadataString = selectedOption.attr('data-metadata');
-            const metadata = metadataString ? JSON.parse(metadataString) : null;
+            let metadata = null;
+            if (metadataString) {
+                try {
+                    metadata = JSON.parse(metadataString);
+                } catch (e) {
+                    console.error("Failed to parse template metadata:", e, metadataString);
+                    metadata = null;
+                }
+            }
+            
             const previewDiv = $('#wa-chat-messages');
 
             const isSequence = templateSelect.hasClass('sequence-template');
@@ -531,8 +540,8 @@
                 if (component.type === 'FOOTER') footerText = component.text;
             });
             let waHtml = '<div class="wa-bubble wa-bubble-full">';
-            if (headerText) waHtml += `<div class="wa-bubble-header-inside">${headerText}</div>`;
-            if (bodyText) waHtml += `<div class="wa-bubble-body-inside">${bodyText.replace(/\n/g, '<br>')}</div>`;
+            if (headerText) waHtml += `<div class="wa-bubble-header-inside">${headerText.replace(/{{(\d+)}}/g, '<b>{{$1}}</b>')}</div>`;
+            if (bodyText) waHtml += `<div class="wa-bubble-body-inside">${bodyText.replace(/\n/g, '<br>').replace(/{{(\d+)}}/g, '<b>{{$1}}</b>')}</div>`;
             if (footerText) waHtml += `<div class="wa-bubble-footer-inside">${footerText}</div>`;
             waHtml += '</div>';
             previewDiv.html(waHtml);
@@ -541,13 +550,6 @@
             let mappingsHtml = '';
             const seqIndex = isSequence ? templateSelect.closest('.sequence-item').data('index') : null;
             
-            let savedMappingsForThisItem = null;
-            if (isSequence && savedSequenceItems) {
-                // This is tricky because seqIndex is dynamic. We'll handle this during population.
-            } else if (!isSequence && savedTrigger) {
-                savedMappingsForThisItem = savedTrigger.variable_mappings;
-            }
-
             ['header', 'body'].forEach(part => {
                 const partVariables = [];
                 metadata.components.forEach(component => {
@@ -594,7 +596,8 @@
             allTemplates.forEach(template => {
                 if (!template.metadata) return;
                 const isSelected = itemData && itemData.message_template_id === template.uuid;
-                const metadataAttribute = `data-metadata='${JSON.stringify(template.metadata)}'`;
+                const metadataJson = JSON.stringify(template.metadata).replace(/"/g, '&quot;');
+                const metadataAttribute = `data-metadata="${metadataJson}"`;
                 optionsHtml += `<option value="${template.uuid}" ${isSelected ? 'selected' : ''} ${metadataAttribute}>${template.name}</option>`;
             });
 
@@ -624,7 +627,6 @@
             const newSelect = $(`#sequence_items_container .sequence-item[data-index=${sequenceIndex}] .sequence-template`);
             if (itemData) {
                 updateTemplateUI(newSelect);
-                // Now, pre-select the saved variable mappings
                 const mappings = itemData.variable_mappings ? JSON.parse(itemData.variable_mappings) : null;
                 if(mappings) {
                     for (const [part, vars] of Object.entries(mappings)) {
