@@ -385,4 +385,23 @@ class SwiftChatsWC_API_Handler {
         file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
         return !is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200;
     }
+
+    public function get_template_by_uuid($uuid) {
+        $templates = $this->get_cached_templates();
+
+        if (is_wp_error($templates)) {
+            return null;
+        }
+
+        foreach ($templates as $template) {
+            if (isset($template['uuid']) && $template['uuid'] === $uuid) {
+                if (isset($template['metadata']) && is_array($template['metadata'])) {
+                    $template['metadata'] = wp_json_encode($template['metadata']);
+                }
+                return $template;
+            }
+        }
+
+        return null;
+    }
 } 

@@ -17,83 +17,111 @@
     }
     // Handle add/edit form submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array($_POST['action'], ['add', 'edit'])) {
-        if (! isset(
-            $_POST['order_status'],
-            $_POST['message_template'],
-            $_POST['_wpnonce']) ||
-            ! wp_verify_nonce($_POST['_wpnonce'], 'swiftchats_trigger_nonce')
-        ) {
+        if (!isset($_POST['order_status'], $_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'swiftchats_trigger_nonce')) {
             add_settings_error('swiftchatswc_messages', 'nonce', 'Security check failed. Please try again.', 'error');
-            // Debug log
-            if (function_exists('error_log')) {
-                error_log('SwiftChats Trigger Form Error: ' . print_r($_POST, true));
+        } else {
+            $order_status = sanitize_text_field($_POST['order_status']);
+            $is_active = isset($_POST['is_active']) ? 1 : 0;
+            $variable_mappings = isset($_POST['variable_mapping']) ? wp_json_encode($_POST['variable_mapping']) : '';
+
+            $message_template = '';
+            $template_name = '';
+            $template_metadata = '';
+
+            if ($order_status === 'abandoned_cart') {
+                $message_template = 'abandoned_cart_sequence';
+                $template_name = 'Abandoned Cart Sequence';
+            } else {
+                if (empty($_POST['message_template'])) {
+                    add_settings_error('swiftchatswc_messages', 'validation', 'Message template is required.', 'error');
+                    return;
+                }
+                $message_template = sanitize_text_field($_POST['message_template']);
+                foreach ($templates as $template) {
+                    if (($template['uuid'] ?? '') === $message_template) {
+                        $template_name = $template['name'] ?? '';
+                        $template_metadata = $template['metadata'] ?? '';
+                        break;
+                    }
+                }
             }
 
-        } else {
-            $order_status      = sanitize_text_field($_POST['order_status']);
-            $message_template  = sanitize_text_field($_POST['message_template']);
-            $is_active         = isset($_POST['is_active']) ? 1 : 0;
-            $variable_mappings = isset($_POST['variable_mapping']) ? wp_json_encode($_POST['variable_mapping']) : '';
-            // Get template name and metadata
-            $template_name     = '';
-            $template_metadata = '';
-            require_once plugin_dir_path(__FILE__) . '../api-handler.php';
-            $api_handler = new SwiftChatsWC_API_Handler();
-            $templates   = $api_handler->get_cached_templates();
-            foreach ($templates as $template) {
-                if (($template['uuid'] ?? '') === $message_template) {
-                    $template_name     = $template['name'] ?? '';
-                    $template_metadata = $template['metadata'] ?? '';
-                    break;
-                }
-            }
-            global $wpdb;
-            $table_name = $wpdb->prefix . 'swiftchats_triggers';
+            $trigger_data = [
+                'order_status'          => $order_status,
+                'message_template'      => $message_template,
+                'message_template_name' => $template_name,
+                'template_metadata'     => $template_metadata,
+                'variable_mappings'     => $variable_mappings,
+                'is_active'             => $is_active,
+                'updated_at'            => current_time('mysql'),
+            ];
+
             if ($_POST['action'] === 'add') {
-                $result = $wpdb->insert($table_name, [
-                    'order_status'          => $order_status,
-                    'message_template'      => $message_template,
-                    'message_template_name' => $template_name,
-                    'template_metadata'     => $template_metadata,
-                    'variable_mappings'     => $variable_mappings,
-                    'is_active'             => $is_active,
-                    'created_at'            => current_time('mysql'),
-                    'updated_at'            => current_time('mysql'),
-                ]);
-                if ($result) {
-                    wp_redirect(admin_url('admin.php?page=swiftchatswc-triggers&msg=added'));
-                    exit;
-                } else {
-                    add_settings_error('swiftchatswc_messages', 'db', 'Failed to add trigger.', 'error');
-                }
-            } elseif ($_POST['action'] === 'edit' && ! empty($_POST['trigger_id'])) {
+                $trigger_data['created_at'] = current_time('mysql');
+                $result = $wpdb->insert($table_name, $trigger_data);
+                $trigger_id = $wpdb->insert_id;
+            } else {
                 $trigger_id = absint($_POST['trigger_id']);
-                $result     = $wpdb->update($table_name, [
-                    'order_status'          => $order_status,
-                    'message_template'      => $message_template,
-                    'message_template_name' => $template_name,
-                    'template_metadata'     => $template_metadata,
-                    'variable_mappings'     => $variable_mappings,
-                    'is_active'             => $is_active,
-                    'updated_at'            => current_time('mysql'),
-                ], ['id' => $trigger_id]);
-                if ($result !== false) {
-                    wp_redirect(admin_url('admin.php?page=swiftchatswc-triggers&msg=updated'));
-                    exit;
-                } else {
-                    add_settings_error('swiftchatswc_messages', 'db', 'Failed to update trigger.', 'error');
+                $result = $wpdb->update($table_name, $trigger_data, ['id' => $trigger_id]);
+            }
+
+            if ($result === false) {
+                add_settings_error('swiftchatswc_messages', 'db', 'Failed to save trigger.', 'error');
+            } else {
+                if ($order_status === 'abandoned_cart') {
+                    $sequence_table_name = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+                    $wpdb->delete($sequence_table_name, ['trigger_id' => $trigger_id]);
+
+                    if (!empty($_POST['sequence'])) {
+                        $sequence_items = $_POST['sequence'];
+                        $sequence_order = 0;
+                        foreach ($sequence_items as $item) {
+                            $sequence_order++;
+                            $time_interval = intval($item['time_interval']);
+                            $time_unit = sanitize_text_field($item['time_unit']);
+                            $template_id = sanitize_text_field($item['message_template']);
+                            $variable_mappings_seq = isset($item['variable_mapping']) ? wp_json_encode($item['variable_mapping']) : '';
+                            
+                            $template_name_seq = '';
+                            foreach ($templates as $template) {
+                                if (($template['uuid'] ?? '') === $template_id) {
+                                    $template_name_seq = $template['name'] ?? '';
+                                    break;
+                                }
+                            }
+
+                            $wpdb->insert($sequence_table_name, [
+                                'trigger_id' => $trigger_id,
+                                'time_interval' => $time_interval,
+                                'time_unit' => $time_unit,
+                                'message_template_id' => $template_id,
+                                'message_template_name' => $template_name_seq,
+                                'variable_mappings' => $variable_mappings_seq,
+                                'sequence_order' => $sequence_order,
+                            ]);
+                        }
+                    }
                 }
+                $redirect_url = $_POST['action'] === 'add' ? 'admin.php?page=swiftchatswc-triggers&msg=added' : 'admin.php?page=swiftchatswc-triggers&msg=updated';
+                wp_redirect(admin_url($redirect_url));
+                exit;
             }
         }
     }
     // Handle form submission (handled in main plugin logic, not here)
     $trigger = null;
+    $sequence_items = []; // Initialize empty array
     if (isset($_GET['id'])) {
         $trigger_id = absint($_GET['id']);
         if ($trigger_id > 0) {
             $trigger = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $trigger_id));
             if ($trigger) {
                 $trigger->variable_mappings = ! empty($trigger->variable_mappings) ? json_decode($trigger->variable_mappings, true) : [];
+
+                if ($trigger->order_status === 'abandoned_cart') {
+                    $sequence_table_name = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+                    $sequence_items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $sequence_table_name WHERE trigger_id = %d ORDER BY sequence_order ASC", $trigger_id));
+                }
             }
         }
     }
@@ -140,14 +168,12 @@
                             </select>
 
                         </div>
-                        <div class="form-field form-field-wide">
-                            <label for="message_template">Message Template</label>
-                            <select name="message_template" id="message_template" required class="swiftchats-select">
-                                <option value="" disabled                                                          <?php if (! $trigger) {
-                                                                  echo 'selected';
-                                                          }
-                                                          ?>>Select Template</option>
-                                <?php
+                        <div id="default_trigger_settings">
+                            <div class="form-field form-field-wide">
+                                <label for="message_template">Message Template</label>
+                                <select name="message_template" id="message_template" required class="swiftchats-select">
+                                    <option value="" disabled <?php if (!$trigger) { echo 'selected'; } ?>>Select Template</option>
+                                    <?php
                                     foreach ($templates as $template) {
                                         $metadata = json_decode($template['metadata'] ?? '', true);
                                         if ($metadata) {
@@ -160,8 +186,21 @@
                                             );
                                         }
                                     }
-                                ?>
-                            </select>
+                                    ?>
+                                </select>
+                            </div>
+                            <div id="template_variables" class="form-section-premium" style="display: none;">
+                                <div class="section-header">Template Variables</div>
+                                <div id="variable_mappings"></div>
+                            </div>
+                        </div>
+
+                        <div id="abandoned_cart_sequence_settings" style="display: none;">
+                            <h4>Abandoned Cart Reminders Sequence</h4>
+                            <div id="sequence_items_container">
+                                <!-- Sequence items will be added here dynamically -->
+                            </div>
+                            <button type="button" id="add_sequence_item" class="button">Add Reminder</button>
                         </div>
                     </div>
                     <div class="form-section-premium">
@@ -175,10 +214,6 @@
                         </div>
                     </div>
                     <hr class="form-divider-premium" />
-                    <div id="template_variables" class="form-section-premium" style="display: none;">
-                        <div class="section-header">Template Variables</div>
-                        <div id="variable_mappings"></div>
-                    </div>
                     <div class="sticky-action-bar-premium">
                         <button type="submit" class="button button-primary">Save Trigger</button>
                         <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-triggers')); ?>" class="button">Cancel</a>
@@ -439,112 +474,188 @@
     </style>
     <script>
     jQuery(document).ready(function($) {
+
+        // --- GLOBAL DATA ---
+        const allTemplates = <?php echo json_encode($templates); ?>;
+        const savedTrigger = <?php echo json_encode($trigger); ?>;
+        const savedSequenceItems = <?php echo json_encode($sequence_items); ?>;
         const availableVariables = {
-            'order_id': 'Order ID',
-            'order_total': 'Order Total',
-            'customer_name': 'Customer Name',
-            'billing_first_name': 'Billing First Name',
-            'billing_last_name': 'Billing Last Name',
-            'shipping_address': 'Shipping Address',
-            'payment_method': 'Payment Method',
-            'order_status': 'Order Status',
-            'order_items': 'Order Items',
-            'order_date': 'Order Date',
-            'tracking_number': 'Tracking Number',
+            'order_id': 'Order ID', 'order_total': 'Order Total', 'customer_name': 'Customer Name',
+            'billing_first_name': 'Billing First Name', 'billing_last_name': 'Billing Last Name',
+            'shipping_address': 'Shipping Address', 'payment_method': 'Payment Method', 'order_status': 'Order Status',
+            'order_items': 'Order Items', 'order_date': 'Order Date', 'tracking_number': 'Tracking Number',
             'tracking_url': 'Tracking URL'
         };
-        const savedMappings =                              <?php echo $trigger && is_array($trigger->variable_mappings) ? wp_json_encode($trigger->variable_mappings) : 'null'; ?>;
-        function updateTemplatePreview() {
-            const selectedTemplate = $('#message_template option:selected');
-            const metadata = selectedTemplate.data('metadata');
-            const previewDiv = $('#wa-chat-messages');
-            const variableMappingsDiv = $('#variable_mappings');
-            if (!metadata) {
-                previewDiv.html('<p class="no-template-selected">Select a template to see its preview</p>');
-                $('#template_variables').hide();
-                return;
-            }
-            let headerText = '', bodyText = '', footerText = '';
-            let headerVariables = [], bodyVariables = [];
-            metadata.components.forEach(component => {
-                switch(component.type) {
-                    case 'HEADER':
-                        if (component.format === 'TEXT' && component.text) {
-                            headerText = component.text;
-                            const matches = component.text.match(/\{\{(\d+)\}\}/g) || [];
-                            headerVariables = matches.map(match => match.replace(/[{}]/g, ''));
-                        }
-                        break;
-                    case 'BODY':
-                        if (component.text) {
-                            bodyText = component.text;
-                            const matches = component.text.match(/\{\{(\d+)\}\}/g) || [];
-                            bodyVariables = matches.map(match => match.replace(/[{}]/g, ''));
-                        }
-                        break;
-                    case 'FOOTER':
-                        if (component.text) footerText = component.text;
-                        break;
-                }
-            });
-            let waHtml = '';
-            if (headerText || bodyText || footerText) {
-                waHtml += `<div class="wa-bubble wa-bubble-full">`;
-                if (headerText) waHtml += `<div class="wa-bubble-header-inside">${headerText}</div>`;
-                if (bodyText) waHtml += `<div class="wa-bubble-body-inside">${bodyText.replace(/\n/g, '<br>')}</div>`;
-                if (footerText) waHtml += `<div class="wa-bubble-footer-inside">${footerText}</div>`;
-                waHtml += `</div>`;
-            }
-            previewDiv.html(waHtml || '<p class="no-template-selected">This template has no content to preview</p>');
-            // Variable mapping UI
-            let mappingsHtml = '';
-            if (headerVariables.length > 0) {
-                mappingsHtml += '<div class="variable-card header-variable-card">';
-                mappingsHtml += '<h4 style="margin-top:0">Header Variables</h4>';
-                headerVariables.forEach((variable, index) => {
-                    const savedValue = savedMappings && savedMappings.header ? savedMappings.header[variable] : '';
-                    mappingsHtml += `
-                        <div class="variable-mapping">
-                            <label>Header Variable {{${variable}}}</label>
-                            <select name="variable_mapping[header][${variable}]" class="variable-select swiftchats-select">
-                                <option value="">Select Variable</option>
-                                ${Object.entries(availableVariables).map(([value, label]) =>
-                                    `<option value="${value}" ${savedValue === value ? 'selected' : ''}>${label}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                    `;
-                });
-                mappingsHtml += '</div>';
-            }
-            if (bodyVariables.length > 0) {
-                mappingsHtml += '<div class="variable-card body-variable-card">';
-                mappingsHtml += '<h4 style="margin-top:0">Body Variables</h4>';
-                bodyVariables.forEach((variable, index) => {
-                    const savedValue = savedMappings && savedMappings.body ? savedMappings.body[variable] : '';
-                    mappingsHtml += `
-                        <div class="variable-mapping">
-                            <label>Body Variable {{${variable}}}</label>
-                            <select name="variable_mapping[body][${variable}]" class="variable-select swiftchats-select">
-                                <option value="">Select Variable</option>
-                                ${Object.entries(availableVariables).map(([value, label]) =>
-                                    `<option value="${value}" ${savedValue === value ? 'selected' : ''}>${label}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                    `;
-                });
-                mappingsHtml += '</div>';
-            }
-            if (mappingsHtml) {
-                variableMappingsDiv.html(mappingsHtml);
-                $('#template_variables').show();
+
+        // --- UI TOGGLING ---
+        function toggleTriggerFields() {
+            const orderStatus = $('#order_status').val();
+            if (orderStatus === 'abandoned_cart') {
+                $('#default_trigger_settings').hide();
+                $('#abandoned_cart_sequence_settings').show();
+                $('#message_template').prop('required', false);
             } else {
-                $('#template_variables').hide();
+                $('#default_trigger_settings').show();
+                $('#abandoned_cart_sequence_settings').hide();
+                $('#message_template').prop('required', true);
             }
         }
-        $('#message_template').on('change', updateTemplatePreview);
-        updateTemplatePreview();
+
+        // --- TEMPLATE PREVIEW & VARIABLE MAPPING ---
+        function updateTemplateUI(templateSelect) {
+            if (!templateSelect.length) return;
+
+            const selectedOption = templateSelect.find('option:selected');
+            const metadataString = selectedOption.attr('data-metadata');
+            const metadata = metadataString ? JSON.parse(metadataString) : null;
+            const previewDiv = $('#wa-chat-messages');
+
+            const isSequence = templateSelect.hasClass('sequence-template');
+            const variableContainer = isSequence
+                ? templateSelect.closest('.sequence-item').find('.sequence-variable-mappings')
+                : $('#variable_mappings');
+            
+            variableContainer.html('');
+            if (!isSequence) $('#template_variables').hide();
+
+            if (!metadata) {
+                previewDiv.html('<p class="no-template-selected">Select a template to see its preview</p>');
+                return;
+            }
+
+            // Update live preview
+            let headerText = '', bodyText = '', footerText = '';
+            metadata.components.forEach(component => {
+                if (component.type === 'HEADER' && component.format === 'TEXT') headerText = component.text;
+                if (component.type === 'BODY') bodyText = component.text;
+                if (component.type === 'FOOTER') footerText = component.text;
+            });
+            let waHtml = '<div class="wa-bubble wa-bubble-full">';
+            if (headerText) waHtml += `<div class="wa-bubble-header-inside">${headerText}</div>`;
+            if (bodyText) waHtml += `<div class="wa-bubble-body-inside">${bodyText.replace(/\n/g, '<br>')}</div>`;
+            if (footerText) waHtml += `<div class="wa-bubble-footer-inside">${footerText}</div>`;
+            waHtml += '</div>';
+            previewDiv.html(waHtml);
+
+            // Generate and render variable mappings
+            let mappingsHtml = '';
+            const seqIndex = isSequence ? templateSelect.closest('.sequence-item').data('index') : null;
+            
+            let savedMappingsForThisItem = null;
+            if (isSequence && savedSequenceItems) {
+                // This is tricky because seqIndex is dynamic. We'll handle this during population.
+            } else if (!isSequence && savedTrigger) {
+                savedMappingsForThisItem = savedTrigger.variable_mappings;
+            }
+
+            ['header', 'body'].forEach(part => {
+                const partVariables = [];
+                metadata.components.forEach(component => {
+                    if (component.type.toLowerCase() === part && component.text) {
+                        const matches = component.text.match(/\{\{(\d+)\}\}/g) || [];
+                        matches.forEach(match => partVariables.push(match.replace(/[{}]/g, '')));
+                    }
+                });
+
+                if (partVariables.length > 0) {
+                    mappingsHtml += `<div class="variable-card ${part}-variable-card"><h4 style="margin-top:0">${part.charAt(0).toUpperCase() + part.slice(1)} Variables</h4>`;
+                    partVariables.forEach(variable => {
+                        const name = isSequence
+                            ? `sequence[${seqIndex}][variable_mapping][${part}][${variable}]`
+                            : `variable_mapping[${part}][${variable}]`;
+                        
+                        let options = '<option value="">Select Variable</option>';
+                        for (const [value, label] of Object.entries(availableVariables)) {
+                            options += `<option value="${value}">${label}</option>`;
+                        }
+
+                        mappingsHtml += `
+                            <div class="variable-mapping">
+                                <label>${part.charAt(0).toUpperCase() + part.slice(1)} Variable {{${variable}}}</label>
+                                <select name="${name}" class="variable-select swiftchats-select">${options}</select>
+                            </div>`;
+                    });
+                    mappingsHtml += '</div>';
+                }
+            });
+
+            if (mappingsHtml) {
+                variableContainer.html(mappingsHtml);
+                if (!isSequence) $('#template_variables').show();
+            }
+        }
+
+        // --- SEQUENCE ITEM MANAGEMENT ---
+        let sequenceIndex = 0;
+
+        function addSequenceItem(itemData = null) {
+            sequenceIndex++;
+            let optionsHtml = '<option value="">Select Template</option>';
+            allTemplates.forEach(template => {
+                if (!template.metadata) return;
+                const isSelected = itemData && itemData.message_template_id === template.uuid;
+                const metadataAttribute = `data-metadata='${JSON.stringify(template.metadata)}'`;
+                optionsHtml += `<option value="${template.uuid}" ${isSelected ? 'selected' : ''} ${metadataAttribute}>${template.name}</option>`;
+            });
+
+            const timeInterval = itemData ? itemData.time_interval : '';
+            const timeUnit = itemData ? itemData.time_unit : 'minutes';
+
+            const itemHtml = `
+                <div class="sequence-item" data-index="${sequenceIndex}" style="padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;">
+                    <div class="form-field">
+                        <label style="font-weight: bold;">Send after</label>
+                        <input type="number" name="sequence[${sequenceIndex}][time_interval]" value="${timeInterval}" class="sequence-time-interval" min="1" required style="width: 100px; margin-right: 10px;">
+                        <select name="sequence[${sequenceIndex}][time_unit]" class="sequence-time-unit" required>
+                            <option value="minutes" ${timeUnit === 'minutes' ? 'selected' : ''}>Minutes</option>
+                            <option value="hours" ${timeUnit === 'hours' ? 'selected' : ''}>Hours</option>
+                            <option value="days" ${timeUnit === 'days' ? 'selected' : ''}>Days</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label style="font-weight: bold;">Template</label>
+                        <select name="sequence[${sequenceIndex}][message_template]" class="sequence-template swiftchats-select" required>${optionsHtml}</select>
+                    </div>
+                    <div class="sequence-variable-mappings" style="padding: 10px 0;"></div>
+                    <button type="button" class="button remove-sequence-item">Remove</button>
+                </div>`;
+            $('#sequence_items_container').append(itemHtml);
+
+            const newSelect = $(`#sequence_items_container .sequence-item[data-index=${sequenceIndex}] .sequence-template`);
+            if (itemData) {
+                updateTemplateUI(newSelect);
+                // Now, pre-select the saved variable mappings
+                const mappings = itemData.variable_mappings ? JSON.parse(itemData.variable_mappings) : null;
+                if(mappings) {
+                    for (const [part, vars] of Object.entries(mappings)) {
+                        for (const [varNum, varName] of Object.entries(vars)) {
+                           newSelect.closest('.sequence-item').find(`select[name="sequence[${sequenceIndex}][variable_mapping][${part}][${varNum}]"]`).val(varName);
+                        }
+                    }
+                }
+            }
+        }
+
+        // --- INITIALIZATION & EVENT LISTENERS ---
+        toggleTriggerFields();
+
+        if (savedSequenceItems && savedSequenceItems.length > 0) {
+            savedSequenceItems.forEach(item => addSequenceItem(item));
+        }
+        
+        updateTemplateUI($('#message_template'));
+        if (savedTrigger && savedTrigger.variable_mappings) {
+             for (const [part, vars] of Object.entries(savedTrigger.variable_mappings)) {
+                for (const [varNum, varName] of Object.entries(vars)) {
+                   $('#variable_mappings').find(`select[name="variable_mapping[${part}][${varNum}]"]`).val(varName);
+                }
+            }
+        }
+
+        $('#order_status').on('change', toggleTriggerFields);
+        $('#add_sequence_item').on('click', () => addSequenceItem());
+        $('#sequence_items_container').on('click', '.remove-sequence-item', function() { $(this).closest('.sequence-item').remove(); });
+        $('.swiftchats-main').on('change', '#message_template, .sequence-template', function() { updateTemplateUI($(this)); });
     });
     </script>
 </div>

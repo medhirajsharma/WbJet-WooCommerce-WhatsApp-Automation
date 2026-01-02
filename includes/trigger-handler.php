@@ -1,5 +1,5 @@
 <?php
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -8,40 +8,32 @@ add_action('woocommerce_order_status_changed', 'swiftchatswc_handle_order_status
 
 // Abandoned Cart Logic
 add_action('woocommerce_cart_updated', 'swiftchatswc_maybe_schedule_abandoned_cart_check', 999);
-add_action('swiftchatswc_check_abandoned_cart', 'swiftchatswc_process_abandoned_cart', 10, 1);
+add_action('swiftchatswc_check_abandoned_cart', 'swiftchatswc_process_abandoned_cart', 10, 2);
+add_action('woocommerce_checkout_order_processed', 'swiftchatswc_cancel_abandoned_cart_on_purchase', 10, 1);
+
 
 function swiftchatswc_handle_order_status_change($order_id, $old_status, $new_status, $order)
 {
     global $wpdb;
 
-    // Ensure we have valid parameters
     if (empty($order_id) || empty($new_status)) {
         return;
     }
 
-    // Get the trigger for this status
     $table_name = $wpdb->prefix . 'swiftchats_triggers';
-    $trigger    = $wpdb->get_row($wpdb->prepare(
+    $trigger = $wpdb->get_row($wpdb->prepare(
         "SELECT * FROM $table_name WHERE order_status = %s AND is_active = 1",
         'wc-' . sanitize_text_field($new_status)
     ));
 
-    // Also check for abandoned_cart pseudo-status
-    if (! $trigger && $new_status === 'abandoned_cart') {
-        $trigger = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE order_status = %s AND is_active = 1",
-            'abandoned_cart'
-        ));
-    }
-
-    if ($trigger) {
+    if ($trigger && $trigger->order_status !== 'abandoned_cart') {
         $order_obj = wc_get_order($order_id);
         if ($order_obj) {
             $phone = $order_obj->get_billing_phone();
-            if (! empty($phone)) {
+            if (!empty($phone)) {
                 $variable_mappings = $trigger->variable_mappings ? json_decode($trigger->variable_mappings, true) : [];
                 require_once plugin_dir_path(__FILE__) . 'api-handler.php';
-                $api_handler       = new SwiftChatsWC_API_Handler();
+                $api_handler = new SwiftChatsWC_API_Handler();
                 $template_metadata = $trigger->template_metadata ? json_decode($trigger->template_metadata, true) : null;
                 if ($template_metadata) {
                     $api_handler->send_template_with_metadata($phone, $template_metadata, $variable_mappings, $order_obj);
@@ -49,162 +41,168 @@ function swiftchatswc_handle_order_status_change($order_id, $old_status, $new_st
             }
         }
     }
-
-    // --- NOTIFICATION LOGIC (business phone) ---
-    $notifications_table = $wpdb->prefix . 'swiftchats_notifications';
-    // Try both with and without wc- prefix for order_status
-    $notification = $wpdb->get_row($wpdb->prepare(
-        "SELECT * FROM $notifications_table WHERE (order_status = %s OR order_status = %s) AND is_active = 1",
-        'wc-' . sanitize_text_field($new_status),
-        sanitize_text_field($new_status)
-    ));
-    if ($notification) {
-        $options        = get_option('swiftchatswc_options', []);
-        $country_code   = $options['country_code'] ?? '+1';
-        $business_phone = $options['business_phone'] ?? '';
-        // Log business_phone and to
-        $log_message = '[notification] ' . date('[Y-m-d H:i:s] ') . 'business_phone: ' . $business_phone . PHP_EOL;
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
-        if (! empty($business_phone)) {
-            $to          = $country_code . preg_replace('/[^0-9]/', '', $business_phone);
-            $log_message = '[notification] ' . date('[Y-m-d H:i:s] ') . 'to: ' . $to . PHP_EOL;
-            file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
-            $variable_mappings = $notification->variable_mappings ? json_decode($notification->variable_mappings, true) : [];
-            require_once plugin_dir_path(__FILE__) . 'api-handler.php';
-            $api_handler       = new SwiftChatsWC_API_Handler();
-            $template_metadata = $notification->template_metadata ? json_decode($notification->template_metadata, true) : null;
-            if ($template_metadata) {
-                $api_handler->send_template_with_metadata($to, $template_metadata, $variable_mappings, $order);
-            }
-        }
-    }
-}
-
-function swiftchatswc_send_whatsapp_message($to, $message)
-{
-    $options = get_option('swiftchatswc_options', []);
-    $api_key = $options['api_key'] ?? '';
-
-    if (empty($api_key) || empty($to) || empty($message)) {
-        return false;
-    }
-
-    // Format phone number
-    $country_code = $options['country_code'] ?? '+1';
-    $to           = preg_replace('/[^0-9]/', '', (string) $to);
-    $to           = $country_code . $to;
-
-    // TODO: Implement actual API call to WhatsApp service
-    // This is a placeholder for the actual API implementation
-    // You would need to implement the actual API call based on your WhatsApp service provider
-
-    return true;
 }
 
 function swiftchatswc_maybe_schedule_abandoned_cart_check()
 {
-    if (! is_user_logged_in() && ! isset($_COOKIE['woocommerce_cart_hash'])) {
+    if (!WC()->session || !WC()->session->has_session()) {
         return;
     }
+
     $options = get_option('swiftchatswc_options', []);
     if (empty($options['enable_abandoned_cart'])) {
         return;
     }
-    if (! WC()->session || ! WC()->session->has_session()) {
-        return;
-    }
-    $timeout     = isset($options['abandoned_cart_timeout']) ? (int) $options['abandoned_cart_timeout'] : 60;
-    $timeout     = max($timeout, 1) * MINUTE_IN_SECONDS;
+
     $session_key = WC()->session->get_customer_id();
-    if (! $session_key) {
+    if (!$session_key) {
         return;
     }
-    // Cancel any previous scheduled action for this session
-    if (function_exists('as_unschedule_all_actions')) {
-        as_unschedule_all_actions('swiftchatswc_check_abandoned_cart', [$session_key]);
+
+    // Cancel any previously scheduled actions for this session to restart the sequence.
+    as_unschedule_all_actions('swiftchatswc_check_abandoned_cart', array($session_key), 'swiftchats');
+
+    if (WC()->cart->is_empty()) {
+        return;
     }
-    // Only schedule if cart is not empty
-    if (! WC()->cart->is_empty()) {
-        if (function_exists('as_next_scheduled_action') && ! as_next_scheduled_action('swiftchatswc_check_abandoned_cart', [$session_key])) {
-            as_schedule_single_action(time() + $timeout, 'swiftchatswc_check_abandoned_cart', [$session_key]);
+
+    global $wpdb;
+    $trigger_table = $wpdb->prefix . 'swiftchats_triggers';
+    $sequence_table = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+
+    $trigger = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $trigger_table WHERE order_status = %s AND is_active = 1",
+        'abandoned_cart'
+    ));
+
+    if (!$trigger) {
+        return;
+    }
+
+    $first_sequence_item = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $sequence_table WHERE trigger_id = %d ORDER BY sequence_order ASC LIMIT 1",
+        $trigger->id
+    ));
+
+    if (!$first_sequence_item) {
+        return;
+    }
+
+    $time_interval = (int)$first_sequence_item->time_interval;
+    $time_unit = $first_sequence_item->time_unit;
+    $delay_in_seconds = 0;
+
+    switch ($time_unit) {
+        case 'minutes':
+            $delay_in_seconds = $time_interval * MINUTE_IN_SECONDS;
+            break;
+        case 'hours':
+            $delay_in_seconds = $time_interval * HOUR_IN_SECONDS;
+            break;
+        case 'days':
+            $delay_in_seconds = $time_interval * DAY_IN_SECONDS;
+            break;
+    }
+    
+    if ($delay_in_seconds > 0) {
+        as_schedule_single_action(
+            time() + $delay_in_seconds,
+            'swiftchatswc_check_abandoned_cart',
+            array(
+                'session_key' => $session_key,
+                'sequence_item_id' => $first_sequence_item->id,
+            ),
+            'swiftchats'
+        );
+    }
+}
+
+function swiftchatswc_process_abandoned_cart($session_key, $sequence_item_id)
+{
+    global $wpdb;
+    $sequence_table = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+    $current_sequence_item = $wpdb->get_row($wpdb->prepare("SELECT * FROM $sequence_table WHERE id = %d", $sequence_item_id));
+
+    if (!$current_sequence_item) {
+        return;
+    }
+
+    $session_handler = WC()->session;
+    if (!$session_handler || !method_exists($session_handler, 'get_session')) {
+        return;
+    }
+    
+    $cart = $session_handler->get_session($session_key);
+    if (!$cart || empty($cart['cart'])) {
+        return; // Cart is empty or session expired
+    }
+
+    $customer_data = isset($cart['customer']) ? (is_string($cart['customer']) ? maybe_unserialize($cart['customer']) : $cart['customer']) : null;
+    if (!$customer_data || !is_array($customer_data)) {
+        return;
+    }
+
+    $phone = $customer_data['billing_phone'] ?? $customer_data['phone'] ?? '';
+    if (empty($phone)) {
+        return;
+    }
+
+    // Send the message for the current sequence item
+    require_once plugin_dir_path(__FILE__) . 'api-handler.php';
+    $api_handler = new SwiftChatsWC_API_Handler();
+    $template_info = $api_handler->get_template_by_uuid($current_sequence_item->message_template_id);
+    
+    if ($template_info && !is_wp_error($template_info)) {
+        $template_metadata = json_decode($template_info['metadata'], true);
+        $variable_mappings = $current_sequence_item->variable_mappings ? json_decode($current_sequence_item->variable_mappings, true) : [];
+
+        $api_handler->send_template_with_metadata($phone, $template_metadata, $variable_mappings, $customer_data);
+    }
+    
+    // Schedule the next item in the sequence
+    $next_sequence_item = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $sequence_table WHERE trigger_id = %d AND sequence_order > %d ORDER BY sequence_order ASC LIMIT 1",
+        $current_sequence_item->trigger_id,
+        $current_sequence_item->sequence_order
+    ));
+
+    if ($next_sequence_item) {
+        $time_interval = (int)$next_sequence_item->time_interval;
+        $time_unit = $next_sequence_item->time_unit;
+        $delay_in_seconds = 0;
+
+        switch ($time_unit) {
+            case 'minutes':
+                $delay_in_seconds = $time_interval * MINUTE_IN_SECONDS;
+                break;
+            case 'hours':
+                $delay_in_seconds = $time_interval * HOUR_IN_SECONDS;
+                break;
+            case 'days':
+                $delay_in_seconds = $time_interval * DAY_IN_SECONDS;
+                break;
+        }
+
+        if ($delay_in_seconds > 0) {
+            as_schedule_single_action(
+                time() + $delay_in_seconds,
+                'swiftchatswc_check_abandoned_cart',
+                array(
+                    'session_key' => $session_key,
+                    'sequence_item_id' => $next_sequence_item->id,
+                ),
+                'swiftchats'
+            );
         }
     }
 }
 
-function swiftchatswc_process_abandoned_cart($session_key)
-{
-    $log_message = '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . "Processing session_key: $session_key" . PHP_EOL;
-    file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
-
-    $options = get_option('swiftchatswc_options', []);
-    if (empty($options['enable_abandoned_cart'])) {
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . 'Exiting: Abandoned cart feature is disabled.' . PHP_EOL, FILE_APPEND);
+function swiftchatswc_cancel_abandoned_cart_on_purchase($order_id) {
+    if (!WC()->session || !WC()->session->has_session()) {
         return;
     }
-    // Get Woo session handler
-    $session_handler = WC()->session;
-    if (! $session_handler) {
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . 'Exiting: WC_Session handler not found.' . PHP_EOL, FILE_APPEND);
-        return;
-    }
-    // Try to load the session for this user
-    $cart = null;
-    if (method_exists($session_handler, 'get_session')) {
-        $cart = $session_handler->get_session($session_key);
-    }
-    if (! $cart || empty($cart['cart']) || empty($cart['cart_totals'])) {
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . 'Exiting: Cart is empty or could not be retrieved.' . PHP_EOL, FILE_APPEND);
-        return; // No cart to process
-    }
-
-    // Unserialize customer data if it's a string
-    $customer_data = $cart['customer'] ?? null;
-    if (is_string($customer_data)) {
-        $customer_data = maybe_unserialize($customer_data);
-    }
-
-    // Ensure we have an array to work with
-    if (! is_array($customer_data)) {
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . 'Exiting: Customer data is not in a readable format.' . PHP_EOL, FILE_APPEND);
-        return;
-    }
-
-    // --- RE-ENABLED DEBUG LOG ---
-    $customer_data_log = '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . 'Customer data in session (after unserialize): ' . print_r($customer_data, true) . PHP_EOL;
-    file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $customer_data_log, FILE_APPEND);
-    // --- END RE-ENABLED DEBUG LOG ---
-
-    // Get phone/email if possible (for guests, this may be missing)
-    $phone = $customer_data['billing_phone'] ?? $customer_data['phone'] ?? '';
-    if (empty($phone)) {
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . 'Exiting: No billing phone number found in session.' . PHP_EOL, FILE_APPEND);
-        return;
-    }
-
-    $log_message = '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . "Found phone number: $phone" . PHP_EOL;
-    file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
-
-    // Fire the abandoned_cart trigger
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'swiftchats_triggers';
-    $trigger    = $wpdb->get_row($wpdb->prepare(
-        "SELECT * FROM $table_name WHERE order_status = %s AND is_active = 1",
-        'abandoned_cart'
-    ));
-    if (! $trigger) {
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . 'Exiting: No active trigger found for abandoned_cart.' . PHP_EOL, FILE_APPEND);
-        return;
-    }
-
-    $log_message = '[abandoned_cart] ' . date('[Y-m-d H:i:s] ') . "Found active trigger. Preparing to send message." . PHP_EOL;
-    file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
-
-    $variable_mappings = $trigger->variable_mappings ? json_decode($trigger->variable_mappings, true) : [];
-    require_once plugin_dir_path(__FILE__) . 'api-handler.php';
-    $api_handler       = new SwiftChatsWC_API_Handler();
-    $template_metadata = $trigger->template_metadata ? json_decode($trigger->template_metadata, true) : null;
-    if ($template_metadata) {
-        // For abandoned cart, pass customer data array as the last param
-        $api_handler->send_template_with_metadata($phone, $template_metadata, $variable_mappings, $customer_data);
+    $session_key = WC()->session->get_customer_id();
+    if ($session_key) {
+        as_unschedule_all_actions('swiftchatswc_check_abandoned_cart', array('session_key' => $session_key), 'swiftchats');
     }
 }

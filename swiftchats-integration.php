@@ -71,6 +71,22 @@ function swiftchatswc_create_tables()
         PRIMARY KEY  (id)
     ) $charset_collate;";
     dbDelta($sql_notifications);
+
+    // Abandoned cart sequence table
+    $sequence_table_name = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+    $sql_sequence = "CREATE TABLE IF NOT EXISTS $sequence_table_name (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        trigger_id bigint(20) NOT NULL,
+        time_interval int NOT NULL,
+        time_unit varchar(20) NOT NULL,
+        message_template_id varchar(255) NOT NULL,
+        message_template_name varchar(255) NOT NULL,
+        variable_mappings text DEFAULT NULL,
+        sequence_order int NOT NULL DEFAULT 0,
+        PRIMARY KEY  (id),
+        FOREIGN KEY (trigger_id) REFERENCES {$wpdb->prefix}swiftchats_triggers(id) ON DELETE CASCADE
+    ) $charset_collate;";
+    dbDelta($sql_sequence);
 }
 
 function swiftchatswc_update_db_check()
