@@ -552,12 +552,16 @@
             let mappingsHtml = '';
             const seqIndex = isSequence ? templateSelect.closest('.sequence-item').data('index') : null;
             
+            // Handle Header and Body variables
             ['header', 'body'].forEach(part => {
                 const partVariables = [];
                 metadata.components.forEach(component => {
                     if (component.type.toLowerCase() === part && component.text) {
                         const matches = component.text.match(/\{\{(\d+)\}\}/g) || [];
-                        matches.forEach(match => partVariables.push(match.replace(/[{}]/g, '')));
+                        matches.forEach(match => {
+                            const varNum = match.replace(/[{}]/g, '');
+                            if (!partVariables.includes(varNum)) partVariables.push(varNum);
+                        });
                     }
                 });
 
@@ -567,12 +571,10 @@
                         const name = isSequence
                             ? `sequence[${seqIndex}][variable_mapping][${part}][${variable}]`
                             : `variable_mapping[${part}][${variable}]`;
-                        
                         let options = '<option value="">Select Variable</option>';
                         for (const [value, label] of Object.entries(availableVariables)) {
                             options += `<option value="${value}">${label}</option>`;
                         }
-
                         mappingsHtml += `
                             <div class="variable-mapping">
                                 <label>${part.charAt(0).toUpperCase() + part.slice(1)} Variable {{${variable}}}</label>
@@ -582,6 +584,53 @@
                     mappingsHtml += '</div>';
                 }
             });
+
+            // Handle Buttons
+            let buttonSpecificMappings = '';
+            let hasButtonSpecificMappings = false;
+            metadata.components.forEach(component => {
+                if (component.type === 'BUTTONS' && Array.isArray(component.buttons)) {
+                    let innerHtml = '';
+                    component.buttons.forEach((button, buttonIndex) => {
+                        hasButtonSpecificMappings = true;
+                        const baseName = `variable_mapping[buttons][${buttonIndex}]`;
+                        const seqBaseName = `sequence[${seqIndex}][variable_mapping][buttons][${buttonIndex}]`;
+                        
+                        if (button.type === 'URL') {
+                            const name = isSequence ? `${seqBaseName}[url]` : `${baseName}[url]`;
+                            const label = button.text || `Button #${buttonIndex + 1} (URL)`;
+                            innerHtml += `
+                                <div class="variable-mapping">
+                                    <label for="${name}">${label}</label>
+                                    <input type="text" id="${name}" name="${name}" value="${button.url || ''}" class="variable-input swiftchats-input" style="flex: 1 1 50%;">
+                                </div>`;
+                        } else if (button.type === 'PHONE_NUMBER') {
+                            const name = isSequence ? `${seqBaseName}[phone_number]` : `${baseName}[phone_number]`;
+                            const label = button.text || `Button #${buttonIndex + 1} (Phone)`;
+                            innerHtml += `
+                                <div class="variable-mapping">
+                                    <label for="${name}">${label}</label>
+                                    <input type="text" id="${name}" name="${name}" value="${button.phone_number || ''}" class="variable-input swiftchats-input" style="flex: 1 1 50%;">
+                                </div>`;
+                        } else if (button.type === 'COPY_CODE') {
+                            const name = isSequence ? `${seqBaseName}[coupon_code]` : `${baseName}[coupon_code]`;
+                            const label = button.text || `Button #${buttonIndex + 1} (Copy Code)`;
+                            const exampleValue = button.example && button.example[0] ? button.example[0] : '';
+                            innerHtml += `
+                                <div class="variable-mapping">
+                                    <label for="${name}">${label}</label>
+                                    <input type="text" id="${name}" name="${name}" value="${exampleValue}" class="variable-input swiftchats-input" placeholder="Enter coupon code" style="flex: 1 1 50%;">
+                                </div>`;
+                        }
+                    });
+
+                    if (hasButtonSpecificMappings) {
+                        buttonSpecificMappings += `<div class="variable-card buttons-variable-card"><h4 style="margin-top:0">Button Values</h4>${innerHtml}</div>`;
+                    }
+                }
+            });
+
+            mappingsHtml += buttonSpecificMappings;
 
             if (mappingsHtml) {
                 variableContainer.html(mappingsHtml);
@@ -635,11 +684,28 @@
                 }
                 
                 if(mappings) {
-                    for (const [part, vars] of Object.entries(mappings)) {
-                        for (const [varNum, varName] of Object.entries(vars)) {
-                           const selector = `select[name="sequence[${sequenceIndex}][variable_mapping][${part}][${varNum}]"]`;
-                           newSelect.closest('.sequence-item').find(selector).val(varName);
+                    const container = newSelect.closest('.sequence-item');
+                    // Handle header and body
+                    if (mappings.header) {
+                        for (const [varNum, varName] of Object.entries(mappings.header)) {
+                            container.find(`[name="sequence[${sequenceIndex}][variable_mapping][header][${varNum}]"]`).val(varName);
                         }
+                    }
+                    if (mappings.body) {
+                        for (const [varNum, varName] of Object.entries(mappings.body)) {
+                            container.find(`[name="sequence[${sequenceIndex}][variable_mapping][body][${varNum}]"]`).val(varName);
+                        }
+                    }
+                    // Handle buttons
+                    if (mappings.buttons) {
+                        mappings.buttons.forEach((buttonData, index) => {
+                            if (buttonData) {
+                                for (const [key, value] of Object.entries(buttonData)) {
+                                    const selector = `[name="sequence[${sequenceIndex}][variable_mapping][buttons][${index}][${key}]"]`;
+                                    container.find(selector).val(value);
+                                }
+                            }
+                        });
                     }
                 }
             }
@@ -654,10 +720,28 @@
         
         updateTemplateUI($('#message_template'));
         if (savedTrigger && savedTrigger.variable_mappings) {
-             for (const [part, vars] of Object.entries(savedTrigger.variable_mappings)) {
-                for (const [varNum, varName] of Object.entries(vars)) {
-                   $('#variable_mappings').find(`select[name="variable_mapping[${part}][${varNum}]"]`).val(varName);
+            const mappings = savedTrigger.variable_mappings;
+            // Handle header and body
+            if (mappings.header) {
+                for (const [varNum, varName] of Object.entries(mappings.header)) {
+                    $('#variable_mappings').find(`[name="variable_mapping[header][${varNum}]"]`).val(varName);
                 }
+            }
+            if (mappings.body) {
+                for (const [varNum, varName] of Object.entries(mappings.body)) {
+                    $('#variable_mappings').find(`[name="variable_mapping[body][${varNum}]"]`).val(varName);
+                }
+            }
+            // Handle buttons
+            if (mappings.buttons) {
+                mappings.buttons.forEach((buttonData, index) => {
+                    if (buttonData) {
+                        for (const [key, value] of Object.entries(buttonData)) {
+                            const selector = `[name="variable_mapping[buttons][${index}][${key}]"]`;
+                            $('#variable_mappings').find(selector).val(value);
+                        }
+                    }
+                });
             }
         }
 

@@ -184,11 +184,14 @@ class SwiftChatsWC_API_Handler {
         } else {
             $header_variable_mappings = $variable_mappings;
         }
+        
         // Fill in variables in components
         if (isset($template['components']) && is_array($template['components'])) {
             $new_components = array();
             $header_component = null;
             $body_component = null;
+            $button_components_to_add = array();
+
             // First, find header and body components and process them
             foreach ($template['components'] as $component) {
                 $type = strtolower($component['type'] ?? '');
@@ -201,59 +204,7 @@ class SwiftChatsWC_API_Handler {
                     if (!empty($header_examples)) {
                         foreach ($header_examples as $idx => $example_value) {
                             $var_key = $header_variable_mappings[$idx + 1] ?? null;
-                            $value = $example_value;
-                            if ($var_key) {
-                                switch ($var_key) {
-                                    case 'order_id': $value = $is_order ? $data->get_id() : 'N/A'; break;
-                                    case 'order_total':
-                                        if ($is_order) {
-                                            $amount = $data->get_total();
-                                            $currency = $data->get_currency();
-                                            $value = wc_price($amount, array('currency' => $currency, 'decimals' => wc_get_price_decimals(), 'html_format' => false));
-                                            $value = strip_tags($value);
-                                            $value = str_replace(["\xC2\xA0", "\xA0", '&nbsp;'], ' ', $value);
-                                            $value = preg_replace('/\s+/', ' ', $value);
-                                            $value = trim($value);
-                                        } else {
-                                            $value = 'N/A';
-                                        }
-                                        break;
-                                    case 'customer_name': $value = $is_order ? trim($data->get_billing_first_name() . ' ' . $data->get_billing_last_name()) : trim(($data['first_name'] ?? '') . ' ' . ($data['last_name'] ?? '')); break;
-                                    case 'billing_first_name': $value = $is_order ? $data->get_billing_first_name() : ($data['first_name'] ?? ''); break;
-                                    case 'billing_last_name': $value = $is_order ? $data->get_billing_last_name() : ($data['last_name'] ?? ''); break;
-                                    case 'shipping_address':
-                                        if ($is_order) {
-                                            $value = $data->get_formatted_shipping_address();
-                                            $value = preg_replace('/<br\s*\/?\s*>/i', ",", $value);
-                                            $value = strip_tags($value);
-                                            $value = trim($value);
-                                        } else {
-                                            $value = ($data['shipping_address_1'] ?? '') . ', ' . ($data['shipping_city'] ?? '');
-                                        }
-                                        break;
-                                    case 'payment_method': $value = $is_order ? $data->get_payment_method_title() : 'N/A'; break;
-                                    case 'order_status': $value = $is_order ? wc_get_order_status_name($data->get_status()) : 'N/A'; break;
-                                    case 'order_items':
-                                        if ($is_order) {
-                                            $items = $data->get_items();
-                                            $item_names = array();
-                                            foreach ($items as $item) {
-                                                $item_names[] = method_exists($item, 'get_name') ? $item->get_name() : (is_array($item) && isset($item['name']) ? $item['name'] : '');
-                                            }
-                                            $value = implode(', ', $item_names);
-                                        } else {
-                                            $value = 'N/A';
-                                        }
-                                        break;
-                                    case 'order_date': $value = $is_order && $data->get_date_created() ? $data->get_date_created()->date('Y-m-d H:i') : 'N/A'; break;
-                                    case 'tracking_number': $value = $is_order ? $data->get_meta('tracking_number') : 'N/A'; break;
-                                    case 'tracking_url': $value = $is_order ? $data->get_meta('tracking_url') : 'N_A'; break;
-                                    default: $value = $example_value;
-                                }
-                                if (empty($value)) {
-                                    $value = 'N/A';
-                                }
-                            }
+                            $value = $this->get_value_for_key($var_key, $data, $is_order, $example_value);
                             $parameters[] = array(
                                 'type' => 'text',
                                 'text' => (string)$value
@@ -276,59 +227,7 @@ class SwiftChatsWC_API_Handler {
                     if (!empty($body_examples)) {
                         foreach ($body_examples as $idx => $example_value) {
                             $var_key = $body_variable_mappings[$idx + 1] ?? null;
-                            $value = $example_value;
-                            if ($var_key) {
-                                switch ($var_key) {
-                                    case 'order_id': $value = $is_order ? $data->get_id() : 'N/A'; break;
-                                    case 'order_total':
-                                        if ($is_order) {
-                                            $amount = $data->get_total();
-                                            $currency = $data->get_currency();
-                                            $value = wc_price($amount, array('currency' => $currency, 'decimals' => wc_get_price_decimals(), 'html_format' => false));
-                                            $value = strip_tags($value);
-                                            $value = str_replace(["\xC2\xA0", "\xA0", '&nbsp;'], ' ', $value);
-                                            $value = preg_replace('/\s+/', ' ', $value);
-                                            $value = trim($value);
-                                        } else {
-                                            $value = 'N/A';
-                                        }
-                                        break;
-                                    case 'customer_name': $value = $is_order ? trim($data->get_billing_first_name() . ' ' . $data->get_billing_last_name()) : trim(($data['first_name'] ?? '') . ' ' . ($data['last_name'] ?? '')); break;
-                                    case 'billing_first_name': $value = $is_order ? $data->get_billing_first_name() : ($data['first_name'] ?? ''); break;
-                                    case 'billing_last_name': $value = $is_order ? $data->get_billing_last_name() : ($data['last_name'] ?? ''); break;
-                                    case 'shipping_address':
-                                        if ($is_order) {
-                                            $value = $data->get_formatted_shipping_address();
-                                            $value = preg_replace('/<br\s*\/?\s*>/i', ",", $value);
-                                            $value = strip_tags($value);
-                                            $value = trim($value);
-                                        } else {
-                                            $value = ($data['shipping_address_1'] ?? '') . ', ' . ($data['shipping_city'] ?? '');
-                                        }
-                                        break;
-                                    case 'payment_method': $value = $is_order ? $data->get_payment_method_title() : 'N/A'; break;
-                                    case 'order_status': $value = $is_order ? wc_get_order_status_name($data->get_status()) : 'N/A'; break;
-                                    case 'order_items':
-                                        if ($is_order) {
-                                            $items = $data->get_items();
-                                            $item_names = array();
-                                            foreach ($items as $item) {
-                                                $item_names[] = method_exists($item, 'get_name') ? $item->get_name() : (is_array($item) && isset($item['name']) ? $item['name'] : '');
-                                            }
-                                            $value = implode(', ', $item_names);
-                                        } else {
-                                            $value = 'N/A';
-                                        }
-                                        break;
-                                    case 'order_date': $value = $is_order && $data->get_date_created() ? $data->get_date_created()->date('Y-m-d H:i') : 'N/A'; break;
-                                    case 'tracking_number': $value = $is_order ? $data->get_meta('tracking_number') : 'N/A'; break;
-                                    case 'tracking_url': $value = $is_order ? $data->get_meta('tracking_url') : 'N_A'; break;
-                                    default: $value = $example_value;
-                                }
-                                if (empty($value)) {
-                                    $value = 'N/A';
-                                }
-                            }
+                            $value = $this->get_value_for_key($var_key, $data, $is_order, $example_value);
                             $parameters[] = array(
                                 'type' => 'text',
                                 'text' => (string)$value
@@ -340,6 +239,36 @@ class SwiftChatsWC_API_Handler {
                         unset($component['text'], $component['example']);
                         $body_component = $component;
                     }
+                } elseif ($type === 'buttons' && isset($component['buttons']) && is_array($component['buttons'])) {
+                    foreach ($component['buttons'] as $index => $button) {
+                        $sub_type = strtolower($button['type'] ?? '');
+                        $button_parameters = array();
+                        $user_button_map = $variable_mappings['buttons'][$index] ?? null;
+
+                        if ($sub_type === 'url' && isset($user_button_map['url'])) {
+                            $url_value = $user_button_map['url'];
+                            // The API only allows replacing a variable, not a whole static URL.
+                            // This logic assumes the original template URL has a variable.
+                            if (preg_match('/\{\{(\d+)\}\}/', $button['url'])) {
+                                 $button_parameters[] = array('type' => 'text', 'text' => (string)$url_value);
+                            }
+                        } elseif ($sub_type === 'copy_code' && isset($user_button_map['coupon_code'])) {
+                            $value = $user_button_map['coupon_code'];
+                            if ($value !== '') {
+                                $button_parameters[] = array('type' => 'coupon_code', 'coupon_code' => (string)$value);
+                            }
+                        }
+                        // PHONE_NUMBER buttons are static and do not have parameters.
+
+                        if (!empty($button_parameters)) {
+                            $button_components_to_add[] = array(
+                                'type' => 'button',
+                                'sub_type' => $sub_type,
+                                'index' => (string)$index,
+                                'parameters' => $button_parameters
+                            );
+                        }
+                    }
                 }
                 // Skip footer always
             }
@@ -349,6 +278,9 @@ class SwiftChatsWC_API_Handler {
             }
             if ($body_component) {
                 $new_components[] = $body_component;
+            }
+            if (!empty($button_components_to_add)) {
+                $new_components = array_merge($new_components, $button_components_to_add);
             }
             $template['components'] = $new_components;
         }
@@ -384,6 +316,80 @@ class SwiftChatsWC_API_Handler {
         $log_message = '[send_template_with_metadata] ' . date('[Y-m-d H:i:s] ') . print_r($response, true) . PHP_EOL;
         file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
         return !is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200;
+    }
+
+    private function get_value_for_key($var_key, $data, $is_order, $default_value = 'N/A') {
+        $value = $default_value;
+        switch ($var_key) {
+            case 'order_id':
+                $value = $is_order ? $data->get_id() : 'N/A';
+                break;
+            case 'order_total':
+                if ($is_order) {
+                    $amount = $data->get_total();
+                    $currency = $data->get_currency();
+                    $value = wc_price($amount, array('currency' => $currency, 'decimals' => wc_get_price_decimals(), 'html_format' => false));
+                    $value = strip_tags($value);
+                    $value = str_replace(["\xC2\xA0", "\xA0", '&nbsp;'], ' ', $value);
+                    $value = preg_replace('/\s+/', ' ', $value);
+                    $value = trim($value);
+                } else {
+                    $value = 'N/A';
+                }
+                break;
+            case 'customer_name':
+                $value = $is_order ? trim($data->get_billing_first_name() . ' ' . $data->get_billing_last_name()) : trim(($data['first_name'] ?? '') . ' ' . ($data['last_name'] ?? ''));
+                break;
+            case 'billing_first_name':
+                $value = $is_order ? $data->get_billing_first_name() : ($data['first_name'] ?? '');
+                break;
+            case 'billing_last_name':
+                $value = $is_order ? $data->get_billing_last_name() : ($data['last_name'] ?? '');
+                break;
+            case 'shipping_address':
+                if ($is_order) {
+                    $value = $data->get_formatted_shipping_address();
+                    $value = preg_replace('/<br\s*\/?\s*>/i', ",", $value);
+                    $value = strip_tags($value);
+                    $value = trim($value);
+                } else {
+                    $value = ($data['shipping_address_1'] ?? '') . ', ' . ($data['shipping_city'] ?? '');
+                }
+                break;
+            case 'payment_method':
+                $value = $is_order ? $data->get_payment_method_title() : 'N/A';
+                break;
+            case 'order_status':
+                $value = $is_order ? wc_get_order_status_name($data->get_status()) : 'N/A';
+                break;
+            case 'order_items':
+                if ($is_order) {
+                    $items = $data->get_items();
+                    $item_names = array();
+                    foreach ($items as $item) {
+                        $item_names[] = method_exists($item, 'get_name') ? $item->get_name() : (is_array($item) && isset($item['name']) ? $item['name'] : '');
+                    }
+                    $value = implode(', ', $item_names);
+                } else {
+                    $value = 'N/A';
+                }
+                break;
+            case 'order_date':
+                $value = $is_order && $data->get_date_created() ? $data->get_date_created()->date('Y-m-d H:i') : 'N/A';
+                break;
+            case 'tracking_number':
+                $value = $is_order ? $data->get_meta('tracking_number') : 'N/A';
+                break;
+            case 'tracking_url':
+                $value = $is_order ? $data->get_meta('tracking_url') : 'N/A';
+                break;
+        }
+
+        if (empty($value)) {
+            $value = $default_value;
+        }
+
+        return $value;
     }
 
     public function get_template_by_uuid($uuid) {
