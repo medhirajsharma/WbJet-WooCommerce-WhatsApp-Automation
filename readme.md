@@ -16,48 +16,79 @@ WBWWA for WooCommerce bridges the gap between store owners and customers by send
 
 == Core Features ==
 
-- **Instant WhatsApp Alerts**  
-  Automatically send messages when a new order is received or the order status changes—supporting statuses like pending, processing, completed, and more.
+- **Automated Order Status Notifications**  
+  Send instant alerts when an order is Placed, Shipped, Processing, or Completed. Fully compatible with all native WooCommerce statuses.
 
-- **Message Personalization**  
-  Create tailored messages using dynamic tags such as customer name, order ID, and total amount.
+- **Abandoned Cart Recovery (Sequence)**  
+  Automatically follow up with customers who left items in their cart. Set multiple reminders (e.g., 1 hour, 12 hours, 24 hours) to boost conversion.
 
-- **Embedded Chat Widget**  
-  Place a sleek WBWWA widget on your website to handle customer queries in real time.
+- **Post-Purchase Follow-ups (Sequence)**  
+  Request reviews or offer discount coupons automatically after an order is marked "Completed".
 
-- **Flexible Order Status Handling**  
-  Assign specific messages to different order stages for improved clarity.
+- **Admin/Business Notifications**  
+  Keep your team updated. Receive real-time WhatsApp alerts on your business phone whenever a new order is placed or status changes.
 
-- **Activity Logging (Debug Mode)**  
-  Record message history and API responses to help you troubleshoot quickly.
+- **Interactive WhatsApp Buttons**  
+  Use WhatsApp's native interactive buttons (Confirm/Cancel). Perfect for Cash on Delivery (COD) verification.
 
-== Installation & Setup ==
+- **Real-Time WhatsApp Chat Widget**  
+  Embedded chat bubble with customizable position, pre-filled messages, and "online" indicators to improve customer trust.
 
-1. Upload the plugin to the `/wp-content/plugins/` directory  
-2. Activate it via the WordPress Plugins menu  
-3. Navigate to WooCommerce → WBWWA Settings  
-4. Enter your API key from your WBWWA account  
-5. Customize your message templates  
-6. Enable and configure the chat widget as needed
+- **Dynamic Personalization (Variable Mapping)**  
+  Map WooCommerce data fields (Customer Name, Order Total, Tracking URL, Items List) to your WhatsApp template variables.
 
-== Frequently Asked Questions ==
+== Configuration & Settings ==
 
-**Is a WBWWA account required?**  
-Yes. You'll need to register to access your API key.
+Access these options under **WhatsApp Automation > Settings**:
 
-**Why aren’t my messages sending?**  
-Make sure your templates include all required placeholders and that Debug Mode is active to view potential issues.
+- **API Business Setup**: Securely connect your store using your wbjet.com API Key.
+- **Global Country Code**: Set a default country code for numbers without a '+' prefix.
+- **Business Notification Settings**: Enable/Disable admin alerts and set the receiver phone number.
+- **Abandoned Cart Settings**: Enable the feature and set the inactivity timeout (in minutes).
+- **Chat Widget Customization**:
+    - **Position**: Place the widget on the bottom-right or bottom-left.
+    - **Custom Message**: Set a default starting message for customers.
+    - **Specific Phone**: Use a different number for support queries than your main business number.
+- **Opt-in Management**: Add a GDPR-compliant opt-in checkbox to the checkout page.
 
-== External Services ==
+== Automation Triggers & Sequences ==
 
-This plugin uses the WBWWA API to provide messaging and live chat capabilities.
+Under **WhatsApp Automation > Triggers**, you can configure:
 
-- **Service Name:** WBWWA API  
-- **Functionality:** Sends WhatsApp messages and powers chat widget  
-- **Data Shared:** Customer details (name, number), order ID, and status  
-- **Data Trigger:** On order creation or status change
+1. **Standard Triggers**: Single messages sent exactly when a status changes.
+2. **Abandoned Cart Reminders**: Multi-message sequences triggered by incomplete sessions.
+3. **Post-Purchase Sequences**: Multi-message sequences triggered after successful completion.
+
+== Webhook Setup (Interactive Replies) ==
+
+To handle button clicks (Confirm/Cancel) from customers, configure your webhook in **wbjet.com**:
+
+- **URL**: `https://your-domain.com/wp-json/wbwwa/v1/webhook`
+- **Required Event**: `message.received`
+
+== Available Personalization Tags ==
+
+You can map these tags to your WhatsApp templates:
+- `{{order_id}}`, `{{order_total}}`, `{{customer_name}}`
+- `{{billing_first_name}}`, `{{billing_last_name}}`, `{{shipping_address}}`
+- `{{payment_method}}`, `{{order_status}}`, `{{order_items}}`
+- `{{order_date}}`, `{{tracking_number}}`, `{{tracking_url}}`
+
+== Installation ==
+
+1. Upload the plugin to your `/wp-content/plugins/` folder.
+2. Activate and navigate to **WhatsApp Automation**.
+3. Enter your API Key from [wbjet.com](https://app.wbjet.com/).
+4. Create your first Trigger and you're good to go!
+
 
 == Changelog ==
 
-= 1.0 =  
+= 1.0.1 =
+- Added Abandoned Cart Sequence.
+- Added Post-Purchase Review Sequence.
+- Added Webhook Receiver for interactive button replies.
+- Added Safety checks for automatic order confirmation.
+
+= 1.0 =
 - Initial release: WhatsApp notifications + real-time site chat widget.

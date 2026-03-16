@@ -7,9 +7,9 @@ Chat Widget Support – Enable direct communication from your Wordpress site to 
 Easy Setup – Seamlessly install and connect with your existing WBWWA and WooCommerce setup.
 Reduce Cart Abandonment – Engage customers at the right time with proactive messages.
 Fully Compatible – Works with the latest versions of WooCommerce and WordPress.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Dhiraj Sharma
- * Author URI: https://app.wbjet.com/
+ * Author URI: https://wbjet.com/
  * License: GPL v2 or later
  * Requires Plugins: woocommerce
  */
@@ -30,6 +30,7 @@ require_once WBWWA_WC_PLUGIN_DIR . 'includes/admin-menu.php';
 require_once WBWWA_WC_PLUGIN_DIR . 'includes/chat-widget.php';
 require_once WBWWA_WC_PLUGIN_DIR . 'includes/country-codes.php';
 require_once WBWWA_WC_PLUGIN_DIR . 'includes/trigger-handler.php';
+require_once WBWWA_WC_PLUGIN_DIR . 'includes/webhook-handler.php';
 // Activation hook
 register_activation_hook(__FILE__, 'WBWWAwc_activate');
 

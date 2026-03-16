@@ -107,7 +107,24 @@ function WBWWAwc_handle_order_status_change($order_id, $old_status, $new_status,
                 $api_handler = new WBWWAWC_API_Handler();
                 $template_metadata = $trigger->template_metadata ? json_decode($trigger->template_metadata, true) : null;
                 if ($template_metadata) {
-                    $api_handler->send_template_with_metadata($phone, $template_metadata, $variable_mappings, $order_obj);
+                    $sent = $api_handler->send_template_with_metadata($phone, $template_metadata, $variable_mappings, $order_obj);
+                    
+                    // If message sent successfully AND template has buttons, mark order as awaiting reply
+                    if ($sent && isset($template_metadata['components'])) {
+                        $has_buttons = false;
+                        foreach ($template_metadata['components'] as $comp) {
+                            if (isset($comp['type']) && (strtolower($comp['type']) === 'buttons' || strtolower($comp['type']) === 'button')) {
+                                $has_buttons = true;
+                                break;
+                            }
+                        }
+                        
+                        if ($has_buttons) {
+                            $order_obj->update_meta_data('_wbwwa_awaiting_reply', '1');
+                            $order_obj->save();
+                            WBWWAwc_debug_log("[Trigger] Order #{$order_id} marked as awaiting reply due to buttons.");
+                        }
+                    }
                 }
             }
         }
