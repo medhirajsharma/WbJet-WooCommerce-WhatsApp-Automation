@@ -1,2 +1,1090 @@
-[notification] [2025-06-09 08:26:07] business_phone: 720055819
-[notification] [2025-06-09 08:26:07] to: +254720055819
+[2026-03-16 15:02:24] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:24] [AC Start] Exiting: No WC_Session found.
+[2026-03-16 15:02:26] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:26] [AC Start] Exiting: No WC_Session found.
+[2026-03-16 15:02:28] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:28] [AC Start] Exiting: No WC_Session found.
+[2026-03-16 15:02:29] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:29] [AC Start] Session Key: t_6d609991ff818fcfcbd32b5f68b990
+[2026-03-16 15:02:29] [AC Start] Found active trigger with ID: 2
+[2026-03-16 15:02:29] [AC Start] Found first sequence item (ID: 1) with order: 1.
+[2026-03-16 15:02:30] [AC Start] Scheduled action ID 16894 for 2026-03-16 15:03:29 with sequence item ID: 1.
+[2026-03-16 15:02:34] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:34] [AC Start] Session Key: t_6d609991ff818fcfcbd32b5f68b990
+[2026-03-16 15:02:34] [AC Start] Found active trigger with ID: 2
+[2026-03-16 15:02:34] [AC Start] Found first sequence item (ID: 1) with order: 1.
+[2026-03-16 15:02:34] [AC Start] Scheduled action ID 16895 for 2026-03-16 15:03:34 with sequence item ID: 1.
+[2026-03-16 15:02:41] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:41] [AC Start] Session Key: t_6d609991ff818fcfcbd32b5f68b990
+[2026-03-16 15:02:41] [AC Start] Found active trigger with ID: 2
+[2026-03-16 15:02:41] [AC Start] Found first sequence item (ID: 1) with order: 1.
+[2026-03-16 15:02:41] [AC Start] Scheduled action ID 16898 for 2026-03-16 15:03:41 with sequence item ID: 1.
+[2026-03-16 15:02:43] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:43] [AC Start] Session Key: t_6d609991ff818fcfcbd32b5f68b990
+[2026-03-16 15:02:43] [AC Start] Found active trigger with ID: 2
+[2026-03-16 15:02:43] [AC Start] Found first sequence item (ID: 1) with order: 1.
+[2026-03-16 15:02:43] [AC Start] Scheduled action ID 16899 for 2026-03-16 15:03:43 with sequence item ID: 1.
+[2026-03-16 15:02:50] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:50] [AC Start] Session Key: 1
+[2026-03-16 15:02:50] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:02:51] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:51] [AC Start] Session Key: 1
+[2026-03-16 15:02:51] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:02:57] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:57] [AC Start] Session Key: 1
+[2026-03-16 15:02:57] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:02:57] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:57] [AC Start] Session Key: 1
+[2026-03-16 15:02:57] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:02:59] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:59] [AC Start] Session Key: 1
+[2026-03-16 15:02:59] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:02:59] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:02:59] [AC Start] Session Key: 1
+[2026-03-16 15:02:59] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:09] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:09] [AC Start] Session Key: 1
+[2026-03-16 15:03:09] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:09] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:09] [AC Start] Session Key: 1
+[2026-03-16 15:03:09] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:15] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:15] [AC Start] Session Key: 1
+[2026-03-16 15:03:15] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:15] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:15] [AC Start] Session Key: 1
+[2026-03-16 15:03:15] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:20] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:20] [AC Start] Session Key: 1
+[2026-03-16 15:03:20] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:20] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:20] [AC Start] Session Key: 1
+[2026-03-16 15:03:20] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:27] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:27] [AC Start] Session Key: 1
+[2026-03-16 15:03:27] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:27] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:27] [AC Start] Session Key: 1
+[2026-03-16 15:03:27] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:38] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:38] [AC Start] Session Key: 1
+[2026-03-16 15:03:38] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:38] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:38] [AC Start] Session Key: 1
+[2026-03-16 15:03:38] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:47] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:47] [AC Start] Session Key: 1
+[2026-03-16 15:03:47] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:47] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:47] [AC Start] Session Key: 1
+[2026-03-16 15:03:47] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:50] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:50] [AC Start] Session Key: 1
+[2026-03-16 15:03:50] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:53] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:53] [AC Start] Session Key: 1
+[2026-03-16 15:03:53] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:53] [AC Process] `swiftchatswc_process_abandoned_cart` running for Session: t_6d609991ff818fcfcbd32b5f68b990, Sequence Item ID: 1.
+[2026-03-16 15:03:53] [AC Process] Found current sequence item: stdClass Object
+(
+    [id] => 1
+    [trigger_id] => 2
+    [time_interval] => 1
+    [time_unit] => minutes
+    [message_template_id] => 6fecf906-a086-4fd8-bbff-49196bf8f0f1
+    [message_template_name] => abandoned_1
+    [variable_mappings] => {"buttons":[{"url":"https:\/\/classicsteels.in\/checkout\/"}]}
+    [sequence_order] => 1
+)
+
+[2026-03-16 15:03:53] [AC Process] Customer data found: Array
+(
+    [id] => 0
+    [date_modified] => 
+    [first_name] => dhiraj
+    [last_name] => Sharma
+    [company] => 
+    [phone] => +919795164872
+    [email] => dheeraj.gzp@gmail.com
+    [address] => lucknow
+    [address_1] => lucknow
+    [address_2] => 
+    [city] => lucknow
+    [state] => UP
+    [postcode] => 226016
+    [country] => IN
+    [shipping_first_name] => dhiraj
+    [shipping_last_name] => Sharma
+    [shipping_company] => 
+    [shipping_phone] => +919795164872
+    [shipping_address] => lucknow
+    [shipping_address_1] => lucknow
+    [shipping_address_2] => 
+    [shipping_city] => lucknow
+    [shipping_state] => UP
+    [shipping_postcode] => 226016
+    [shipping_country] => IN
+    [is_vat_exempt] => 
+    [calculated_shipping] => 
+    [meta_data] => Array
+        (
+        )
+
+)
+
+[2026-03-16 15:03:53] [AC Process] Found phone number: +919795164872. Preparing to send message.
+[2026-03-16 15:03:53] [AC Process] Found template 'abandoned_1'. Sending notification.
+[send_template_with_metadata] [2026-03-16 15:03:53] Array
+(
+    [phone] => +919795164872
+    [template] => Array
+        (
+            [name] => abandoned_1
+            [language] => Array
+                (
+                    [code] => en
+                )
+
+        )
+
+)
+
+[send_template_with_metadata] [2026-03-16 15:03:54] Array
+(
+    [headers] => WpOrg\Requests\Utility\CaseInsensitiveDictionary Object
+        (
+            [data:protected] => Array
+                (
+                    [x-powered-by] => PHP/8.3.20
+                    [cache-control] => no-cache, private
+                    [content-type] => application/json
+                    [access-control-allow-origin] => *
+                    [content-length] => 712
+                    [content-encoding] => br
+                    [vary] => Accept-Encoding
+                    [date] => Mon, 16 Mar 2026 15:03:54 GMT
+                    [server] => LiteSpeed
+                    [platform] => hostinger
+                    [panel] => hpanel
+                    [retry-after] => 60
+                    [content-security-policy] => upgrade-insecure-requests
+                    [alt-svc] => h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+                )
+
+        )
+
+    [body] => {"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSMTAwQUZEQUJFNjNFMjMzMzA4AA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSMTAwQUZEQUJFNjNFMjMzMzA4AA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Don't miss out! Your items in Cart are about to Stock Out\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit Now\",\"value\":\"Visit Now\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:03:54","uuid":"a44809fc-062f-47d1-b9cb-0cfbbad54550","id":161907,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:03:54","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-15 13:02:49","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+    [response] => Array
+        (
+            [code] => 200
+            [message] => OK
+        )
+
+    [cookies] => Array
+        (
+        )
+
+    [filename] => 
+    [http_response] => WP_HTTP_Requests_Response Object
+        (
+            [data] => 
+            [headers] => 
+            [status] => 
+            [response:protected] => WpOrg\Requests\Response Object
+                (
+                    [body] => {"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSMTAwQUZEQUJFNjNFMjMzMzA4AA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSMTAwQUZEQUJFNjNFMjMzMzA4AA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Don't miss out! Your items in Cart are about to Stock Out\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit Now\",\"value\":\"Visit Now\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:03:54","uuid":"a44809fc-062f-47d1-b9cb-0cfbbad54550","id":161907,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:03:54","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-15 13:02:49","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+                    [raw] => HTTP/1.1 200 OK
+Connection: close
+X-Powered-By: PHP/8.3.20
+Cache-Control: no-cache, private
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+Content-Length: 712
+Content-Encoding: br
+Vary: Accept-Encoding
+Date: Mon, 16 Mar 2026 15:03:54 GMT
+Server: LiteSpeed
+platform: hostinger
+panel: hpanel
+Retry-After: 60
+Content-Security-Policy: upgrade-insecure-requests
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+
+{"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSMTAwQUZEQUJFNjNFMjMzMzA4AA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSMTAwQUZEQUJFNjNFMjMzMzA4AA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Don't miss out! Your items in Cart are about to Stock Out\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit Now\",\"value\":\"Visit Now\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:03:54","uuid":"a44809fc-062f-47d1-b9cb-0cfbbad54550","id":161907,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:03:54","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-15 13:02:49","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+                    [headers] => WpOrg\Requests\Response\Headers Object
+                        (
+                            [data:protected] => Array
+                                (
+                                    [x-powered-by] => Array
+                                        (
+                                            [0] => PHP/8.3.20
+                                        )
+
+                                    [cache-control] => Array
+                                        (
+                                            [0] => no-cache, private
+                                        )
+
+                                    [content-type] => Array
+                                        (
+                                            [0] => application/json
+                                        )
+
+                                    [access-control-allow-origin] => Array
+                                        (
+                                            [0] => *
+                                        )
+
+                                    [content-length] => Array
+                                        (
+                                            [0] => 712
+                                        )
+
+                                    [content-encoding] => Array
+                                        (
+                                            [0] => br
+                                        )
+
+                                    [vary] => Array
+                                        (
+                                            [0] => Accept-Encoding
+                                        )
+
+                                    [date] => Array
+                                        (
+                                            [0] => Mon, 16 Mar 2026 15:03:54 GMT
+                                        )
+
+                                    [server] => Array
+                                        (
+                                            [0] => LiteSpeed
+                                        )
+
+                                    [platform] => Array
+                                        (
+                                            [0] => hostinger
+                                        )
+
+                                    [panel] => Array
+                                        (
+                                            [0] => hpanel
+                                        )
+
+                                    [retry-after] => Array
+                                        (
+                                            [0] => 60
+                                        )
+
+                                    [content-security-policy] => Array
+                                        (
+                                            [0] => upgrade-insecure-requests
+                                        )
+
+                                    [alt-svc] => Array
+                                        (
+                                            [0] => h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+                                        )
+
+                                )
+
+                        )
+
+                    [status_code] => 200
+                    [protocol_version] => 1.1
+                    [success] => 1
+                    [redirects] => 0
+                    [url] => https://app.wbjet.com/api/send/template
+                    [history] => Array
+                        (
+                        )
+
+                    [cookies] => WpOrg\Requests\Cookie\Jar Object
+                        (
+                            [cookies:protected] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [filename:protected] => 
+        )
+
+)
+
+[2026-03-16 15:03:54] [AC Process] Found next sequence item (ID: 2) with order: 2.
+[2026-03-16 15:03:54] [AC Process] Scheduled next action ID 16900 for 2026-03-16 15:06:54 with sequence item ID: 2.
+[2026-03-16 15:03:54] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:54] [AC Start] Session Key: 1
+[2026-03-16 15:03:54] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:03:54] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:03:54] [AC Start] Session Key: 1
+[2026-03-16 15:03:54] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:04:05] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:04:05] [AC Start] Session Key: 1
+[2026-03-16 15:04:05] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:04:05] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:04:05] [AC Start] Session Key: 1
+[2026-03-16 15:04:05] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:04:13] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:04:13] [AC Start] Session Key: 1
+[2026-03-16 15:04:13] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:04:15] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:04:15] [AC Start] Session Key: 1
+[2026-03-16 15:04:15] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:04:15] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:04:15] [AC Start] Session Key: 1
+[2026-03-16 15:04:15] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:04:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:04:16] [AC Start] Session Key: 1
+[2026-03-16 15:04:16] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:04:50] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:04:50] [AC Start] Session Key: 1
+[2026-03-16 15:04:50] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:05:14] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:05:14] [AC Start] Session Key: 1
+[2026-03-16 15:05:14] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:05:31] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:05:31] [AC Start] Session Key: 1
+[2026-03-16 15:05:31] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:05:37] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:05:37] [AC Start] Session Key: 1
+[2026-03-16 15:05:37] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:06:15] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:06:15] [AC Start] Session Key: 1
+[2026-03-16 15:06:15] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:06:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:06:16] [AC Start] Session Key: 1
+[2026-03-16 15:06:16] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:06:32] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:06:32] [AC Start] Session Key: 1
+[2026-03-16 15:06:32] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:06:49] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:06:49] [AC Start] Session Key: 1
+[2026-03-16 15:06:49] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:06:55] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:06:55] [AC Start] Session Key: 1
+[2026-03-16 15:06:55] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:06:55] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:06:55] [AC Start] Session Key: 1
+[2026-03-16 15:06:55] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:05] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:05] [AC Start] Session Key: 1
+[2026-03-16 15:07:05] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:05] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:05] [AC Start] Session Key: 1
+[2026-03-16 15:07:05] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:12] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:12] [AC Start] Session Key: 1
+[2026-03-16 15:07:12] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:12] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:12] [AC Start] Session Key: 1
+[2026-03-16 15:07:12] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:17] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:17] [AC Start] Session Key: 1
+[2026-03-16 15:07:17] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:17] [AC Process] `swiftchatswc_process_abandoned_cart` running for Session: t_6d609991ff818fcfcbd32b5f68b990, Sequence Item ID: 2.
+[2026-03-16 15:07:17] [AC Process] Found current sequence item: stdClass Object
+(
+    [id] => 2
+    [trigger_id] => 2
+    [time_interval] => 3
+    [time_unit] => minutes
+    [message_template_id] => cdaa48c4-d558-4ccd-8297-43ea21ec69e4
+    [message_template_name] => abandoned_2
+    [variable_mappings] => {"buttons":[{"url":"https:\/\/classicsteels.in\/checkout\/"},{"coupon_code":"CSA5"}]}
+    [sequence_order] => 2
+)
+
+[2026-03-16 15:07:17] [AC Process] Customer data found: Array
+(
+    [id] => 0
+    [date_modified] => 
+    [first_name] => dhiraj
+    [last_name] => Sharma
+    [company] => 
+    [phone] => +919795164872
+    [email] => dheeraj.gzp@gmail.com
+    [address] => lucknow
+    [address_1] => lucknow
+    [address_2] => 
+    [city] => lucknow
+    [state] => UP
+    [postcode] => 226016
+    [country] => IN
+    [shipping_first_name] => dhiraj
+    [shipping_last_name] => Sharma
+    [shipping_company] => 
+    [shipping_phone] => +919795164872
+    [shipping_address] => lucknow
+    [shipping_address_1] => lucknow
+    [shipping_address_2] => 
+    [shipping_city] => lucknow
+    [shipping_state] => UP
+    [shipping_postcode] => 226016
+    [shipping_country] => IN
+    [is_vat_exempt] => 
+    [calculated_shipping] => 
+    [meta_data] => Array
+        (
+        )
+
+)
+
+[2026-03-16 15:07:17] [AC Process] Found phone number: +919795164872. Preparing to send message.
+[2026-03-16 15:07:17] [AC Process] Found template 'abandoned_2'. Sending notification.
+[send_template_with_metadata] [2026-03-16 15:07:17] Array
+(
+    [phone] => +919795164872
+    [template] => Array
+        (
+            [name] => abandoned_2
+            [language] => Array
+                (
+                    [code] => en
+                )
+
+            [components] => Array
+                (
+                    [0] => Array
+                        (
+                            [type] => button
+                            [sub_type] => copy_code
+                            [index] => 1
+                            [parameters] => Array
+                                (
+                                    [0] => Array
+                                        (
+                                            [type] => coupon_code
+                                            [coupon_code] => CSA5
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+)
+
+[send_template_with_metadata] [2026-03-16 15:07:18] Array
+(
+    [headers] => WpOrg\Requests\Utility\CaseInsensitiveDictionary Object
+        (
+            [data:protected] => Array
+                (
+                    [x-powered-by] => PHP/8.3.20
+                    [cache-control] => no-cache, private
+                    [content-type] => application/json
+                    [access-control-allow-origin] => *
+                    [content-length] => 763
+                    [content-encoding] => br
+                    [vary] => Accept-Encoding
+                    [date] => Mon, 16 Mar 2026 15:07:18 GMT
+                    [server] => LiteSpeed
+                    [platform] => hostinger
+                    [panel] => hpanel
+                    [retry-after] => 60
+                    [content-security-policy] => upgrade-insecure-requests
+                    [alt-svc] => h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+                )
+
+        )
+
+    [body] => {"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSNTUwQUI5NDRCM0ExQUREODQzAA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSNTUwQUI5NDRCM0ExQUREODQzAA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Your kitchen upgrade is waiting\\n\\nUse CSA5  & upgrade now with Instant 5% Discount\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit website\",\"value\":\"Visit website\"},{\"type\":\"COPY_CODE\",\"text\":\"Copy offer code\",\"value\":\"Copy offer code\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:07:17","uuid":"a701ad06-6480-4dcd-ae90-046f20a2c2c8","id":161909,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:07:17","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-16 15:05:21","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+    [response] => Array
+        (
+            [code] => 200
+            [message] => OK
+        )
+
+    [cookies] => Array
+        (
+        )
+
+    [filename] => 
+    [http_response] => WP_HTTP_Requests_Response Object
+        (
+            [data] => 
+            [headers] => 
+            [status] => 
+            [response:protected] => WpOrg\Requests\Response Object
+                (
+                    [body] => {"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSNTUwQUI5NDRCM0ExQUREODQzAA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSNTUwQUI5NDRCM0ExQUREODQzAA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Your kitchen upgrade is waiting\\n\\nUse CSA5  & upgrade now with Instant 5% Discount\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit website\",\"value\":\"Visit website\"},{\"type\":\"COPY_CODE\",\"text\":\"Copy offer code\",\"value\":\"Copy offer code\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:07:17","uuid":"a701ad06-6480-4dcd-ae90-046f20a2c2c8","id":161909,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:07:17","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-16 15:05:21","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+                    [raw] => HTTP/1.1 200 OK
+Connection: close
+X-Powered-By: PHP/8.3.20
+Cache-Control: no-cache, private
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+Content-Length: 763
+Content-Encoding: br
+Vary: Accept-Encoding
+Date: Mon, 16 Mar 2026 15:07:18 GMT
+Server: LiteSpeed
+platform: hostinger
+panel: hpanel
+Retry-After: 60
+Content-Security-Policy: upgrade-insecure-requests
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+
+{"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSNTUwQUI5NDRCM0ExQUREODQzAA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSNTUwQUI5NDRCM0ExQUREODQzAA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Your kitchen upgrade is waiting\\n\\nUse CSA5  & upgrade now with Instant 5% Discount\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit website\",\"value\":\"Visit website\"},{\"type\":\"COPY_CODE\",\"text\":\"Copy offer code\",\"value\":\"Copy offer code\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:07:17","uuid":"a701ad06-6480-4dcd-ae90-046f20a2c2c8","id":161909,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:07:17","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-16 15:05:21","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+                    [headers] => WpOrg\Requests\Response\Headers Object
+                        (
+                            [data:protected] => Array
+                                (
+                                    [x-powered-by] => Array
+                                        (
+                                            [0] => PHP/8.3.20
+                                        )
+
+                                    [cache-control] => Array
+                                        (
+                                            [0] => no-cache, private
+                                        )
+
+                                    [content-type] => Array
+                                        (
+                                            [0] => application/json
+                                        )
+
+                                    [access-control-allow-origin] => Array
+                                        (
+                                            [0] => *
+                                        )
+
+                                    [content-length] => Array
+                                        (
+                                            [0] => 763
+                                        )
+
+                                    [content-encoding] => Array
+                                        (
+                                            [0] => br
+                                        )
+
+                                    [vary] => Array
+                                        (
+                                            [0] => Accept-Encoding
+                                        )
+
+                                    [date] => Array
+                                        (
+                                            [0] => Mon, 16 Mar 2026 15:07:18 GMT
+                                        )
+
+                                    [server] => Array
+                                        (
+                                            [0] => LiteSpeed
+                                        )
+
+                                    [platform] => Array
+                                        (
+                                            [0] => hostinger
+                                        )
+
+                                    [panel] => Array
+                                        (
+                                            [0] => hpanel
+                                        )
+
+                                    [retry-after] => Array
+                                        (
+                                            [0] => 60
+                                        )
+
+                                    [content-security-policy] => Array
+                                        (
+                                            [0] => upgrade-insecure-requests
+                                        )
+
+                                    [alt-svc] => Array
+                                        (
+                                            [0] => h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+                                        )
+
+                                )
+
+                        )
+
+                    [status_code] => 200
+                    [protocol_version] => 1.1
+                    [success] => 1
+                    [redirects] => 0
+                    [url] => https://app.wbjet.com/api/send/template
+                    [history] => Array
+                        (
+                        )
+
+                    [cookies] => WpOrg\Requests\Cookie\Jar Object
+                        (
+                            [cookies:protected] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [filename:protected] => 
+        )
+
+)
+
+[2026-03-16 15:07:18] [AC Process] Found next sequence item (ID: 3) with order: 3.
+[2026-03-16 15:07:18] [AC Process] Scheduled next action ID 16901 for 2026-03-16 15:12:18 with sequence item ID: 3.
+[2026-03-16 15:07:20] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:20] [AC Start] Session Key: 1
+[2026-03-16 15:07:20] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:20] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:20] [AC Start] Session Key: 1
+[2026-03-16 15:07:20] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:32] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:32] [AC Start] Session Key: 1
+[2026-03-16 15:07:32] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:37] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:37] [AC Start] Session Key: 1
+[2026-03-16 15:07:37] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:37] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:37] [AC Start] Session Key: 1
+[2026-03-16 15:07:37] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:07:49] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:07:49] [AC Start] Session Key: 1
+[2026-03-16 15:07:49] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:16] [AC Start] Session Key: 1
+[2026-03-16 15:08:16] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:39] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:39] [AC Start] Session Key: 1
+[2026-03-16 15:08:39] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:40] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:40] [AC Start] Session Key: 1
+[2026-03-16 15:08:40] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:40] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:40] [AC Start] Session Key: 1
+[2026-03-16 15:08:40] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:48] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:48] [AC Start] Session Key: 1
+[2026-03-16 15:08:48] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:48] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:48] [AC Start] Session Key: 1
+[2026-03-16 15:08:48] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:50] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:50] [AC Start] Session Key: 1
+[2026-03-16 15:08:50] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:57] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:57] [AC Start] Session Key: 1
+[2026-03-16 15:08:57] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:08:57] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:08:57] [AC Start] Session Key: 1
+[2026-03-16 15:08:57] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:09:07] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:09:07] [AC Start] Session Key: 1
+[2026-03-16 15:09:07] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:09:07] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:09:07] [AC Start] Session Key: 1
+[2026-03-16 15:09:07] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:09:15] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:09:15] [AC Start] Session Key: 1
+[2026-03-16 15:09:15] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:09:15] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:09:15] [AC Start] Session Key: 1
+[2026-03-16 15:09:15] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:09:33] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:09:33] [AC Start] Session Key: 1
+[2026-03-16 15:09:33] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:10:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:10:16] [AC Start] Session Key: 1
+[2026-03-16 15:10:16] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:10:17] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:10:17] [AC Start] Session Key: 1
+[2026-03-16 15:10:17] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:10:51] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:10:51] [AC Start] Session Key: 1
+[2026-03-16 15:10:51] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:11:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:11:16] [AC Start] Session Key: 1
+[2026-03-16 15:11:16] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:11:34] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:11:34] [AC Start] Session Key: 1
+[2026-03-16 15:11:34] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:12:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:12:16] [AC Start] Session Key: 1
+[2026-03-16 15:12:16] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:12:18] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:12:18] [AC Start] Session Key: 1
+[2026-03-16 15:12:18] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:12:52] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:12:52] [AC Start] Session Key: 1
+[2026-03-16 15:12:52] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:12:53] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:12:53] [AC Start] Session Key: 1
+[2026-03-16 15:12:53] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:12:53] [AC Process] `swiftchatswc_process_abandoned_cart` running for Session: t_6d609991ff818fcfcbd32b5f68b990, Sequence Item ID: 3.
+[2026-03-16 15:12:53] [AC Process] Found current sequence item: stdClass Object
+(
+    [id] => 3
+    [trigger_id] => 2
+    [time_interval] => 5
+    [time_unit] => minutes
+    [message_template_id] => 7f8be749-6d3d-418e-ada5-cb4dad00f285
+    [message_template_name] => abandoned_3
+    [variable_mappings] => {"buttons":[{"url":"https:\/\/classicsteels.in\/checkout\/"},{"coupon_code":"CSA10"}]}
+    [sequence_order] => 3
+)
+
+[2026-03-16 15:12:53] [AC Process] Customer data found: Array
+(
+    [id] => 0
+    [date_modified] => 
+    [first_name] => dhiraj
+    [last_name] => Sharma
+    [company] => 
+    [phone] => +919795164872
+    [email] => dheeraj.gzp@gmail.com
+    [address] => lucknow
+    [address_1] => lucknow
+    [address_2] => 
+    [city] => lucknow
+    [state] => UP
+    [postcode] => 226016
+    [country] => IN
+    [shipping_first_name] => dhiraj
+    [shipping_last_name] => Sharma
+    [shipping_company] => 
+    [shipping_phone] => +919795164872
+    [shipping_address] => lucknow
+    [shipping_address_1] => lucknow
+    [shipping_address_2] => 
+    [shipping_city] => lucknow
+    [shipping_state] => UP
+    [shipping_postcode] => 226016
+    [shipping_country] => IN
+    [is_vat_exempt] => 
+    [calculated_shipping] => 
+    [meta_data] => Array
+        (
+        )
+
+)
+
+[2026-03-16 15:12:53] [AC Process] Found phone number: +919795164872. Preparing to send message.
+[2026-03-16 15:12:53] [AC Process] Found template 'abandoned_3'. Sending notification.
+[send_template_with_metadata] [2026-03-16 15:12:53] Array
+(
+    [phone] => +919795164872
+    [template] => Array
+        (
+            [name] => abandoned_3
+            [language] => Array
+                (
+                    [code] => en
+                )
+
+            [components] => Array
+                (
+                    [0] => Array
+                        (
+                            [type] => button
+                            [sub_type] => copy_code
+                            [index] => 1
+                            [parameters] => Array
+                                (
+                                    [0] => Array
+                                        (
+                                            [type] => coupon_code
+                                            [coupon_code] => CSA10
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+)
+
+[send_template_with_metadata] [2026-03-16 15:12:54] Array
+(
+    [headers] => WpOrg\Requests\Utility\CaseInsensitiveDictionary Object
+        (
+            [data:protected] => Array
+                (
+                    [x-powered-by] => PHP/8.3.20
+                    [cache-control] => no-cache, private
+                    [content-type] => application/json
+                    [access-control-allow-origin] => *
+                    [content-length] => 745
+                    [content-encoding] => br
+                    [vary] => Accept-Encoding
+                    [date] => Mon, 16 Mar 2026 15:12:54 GMT
+                    [server] => LiteSpeed
+                    [platform] => hostinger
+                    [panel] => hpanel
+                    [retry-after] => 60
+                    [content-security-policy] => upgrade-insecure-requests
+                    [alt-svc] => h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+                )
+
+        )
+
+    [body] => {"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSRjlFQzhCNEY1MkMzRENGMkVFAA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSRjlFQzhCNEY1MkMzRENGMkVFAA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Use CSA10 & upgrade now with Instant 10% Discount\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit website\",\"value\":\"Visit website\"},{\"type\":\"COPY_CODE\",\"text\":\"Copy offer code\",\"value\":\"Copy offer code\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:12:54","uuid":"bbd3193a-ea8c-417f-b803-74dc16e49da0","id":161910,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:12:54","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-16 15:07:17","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+    [response] => Array
+        (
+            [code] => 200
+            [message] => OK
+        )
+
+    [cookies] => Array
+        (
+        )
+
+    [filename] => 
+    [http_response] => WP_HTTP_Requests_Response Object
+        (
+            [data] => 
+            [headers] => 
+            [status] => 
+            [response:protected] => WpOrg\Requests\Response Object
+                (
+                    [body] => {"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSRjlFQzhCNEY1MkMzRENGMkVFAA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSRjlFQzhCNEY1MkMzRENGMkVFAA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Use CSA10 & upgrade now with Instant 10% Discount\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit website\",\"value\":\"Visit website\"},{\"type\":\"COPY_CODE\",\"text\":\"Copy offer code\",\"value\":\"Copy offer code\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:12:54","uuid":"bbd3193a-ea8c-417f-b803-74dc16e49da0","id":161910,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:12:54","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-16 15:07:17","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+                    [raw] => HTTP/1.1 200 OK
+Connection: close
+X-Powered-By: PHP/8.3.20
+Cache-Control: no-cache, private
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+Content-Length: 745
+Content-Encoding: br
+Vary: Accept-Encoding
+Date: Mon, 16 Mar 2026 15:12:54 GMT
+Server: LiteSpeed
+platform: hostinger
+panel: hpanel
+Retry-After: 60
+Content-Security-Policy: upgrade-insecure-requests
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+
+{"statusCode":200,"data":{"success":true,"data":{"messaging_product":"whatsapp","contacts":[{"input":"+919795164872","wa_id":"919795164872"}],"messages":[{"id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSRjlFQzhCNEY1MkMzRENGMkVFAA==","message_status":"accepted"}],"chat":{"organization_id":28,"wam_id":"wamid.HBgMOTE5Nzk1MTY0ODcyFQIAERgSRjlFQzhCNEY1MkMzRENGMkVFAA==","contact_id":78182,"type":"outbound","user_id":0,"metadata":"{\"type\":\"text\",\"text\":{\"body\":\"Use CSA10 & upgrade now with Instant 10% Discount\"},\"buttons\":[{\"type\":\"URL\",\"text\":\"Visit website\",\"value\":\"Visit website\"},{\"type\":\"COPY_CODE\",\"text\":\"Copy offer code\",\"value\":\"Copy offer code\"}]}","media_id":null,"status":"accepted","created_at":"2026-03-16 15:12:54","uuid":"bbd3193a-ea8c-417f-b803-74dc16e49da0","id":161910,"contact":{"id":78182,"uuid":"23699ec8-372a-4157-ae75-c7140b5bda0e","organization_id":28,"first_name":"Dhiraj Sharma","last_name":"","phone":"+919795164872","email":null,"latest_chat_created_at":"2026-03-16 15:12:54","avatar":null,"address":null,"metadata":null,"contact_group_id":null,"is_favorite":0,"ai_assistance_enabled":0,"created_by":0,"created_at":"2025-12-31 12:35:37","updated_at":"2026-03-16 15:07:17","deleted_at":null,"full_name":"Dhiraj Sharma ","formatted_phone_number":"+91 97951 64872"}}}}}
+                    [headers] => WpOrg\Requests\Response\Headers Object
+                        (
+                            [data:protected] => Array
+                                (
+                                    [x-powered-by] => Array
+                                        (
+                                            [0] => PHP/8.3.20
+                                        )
+
+                                    [cache-control] => Array
+                                        (
+                                            [0] => no-cache, private
+                                        )
+
+                                    [content-type] => Array
+                                        (
+                                            [0] => application/json
+                                        )
+
+                                    [access-control-allow-origin] => Array
+                                        (
+                                            [0] => *
+                                        )
+
+                                    [content-length] => Array
+                                        (
+                                            [0] => 745
+                                        )
+
+                                    [content-encoding] => Array
+                                        (
+                                            [0] => br
+                                        )
+
+                                    [vary] => Array
+                                        (
+                                            [0] => Accept-Encoding
+                                        )
+
+                                    [date] => Array
+                                        (
+                                            [0] => Mon, 16 Mar 2026 15:12:54 GMT
+                                        )
+
+                                    [server] => Array
+                                        (
+                                            [0] => LiteSpeed
+                                        )
+
+                                    [platform] => Array
+                                        (
+                                            [0] => hostinger
+                                        )
+
+                                    [panel] => Array
+                                        (
+                                            [0] => hpanel
+                                        )
+
+                                    [retry-after] => Array
+                                        (
+                                            [0] => 60
+                                        )
+
+                                    [content-security-policy] => Array
+                                        (
+                                            [0] => upgrade-insecure-requests
+                                        )
+
+                                    [alt-svc] => Array
+                                        (
+                                            [0] => h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+                                        )
+
+                                )
+
+                        )
+
+                    [status_code] => 200
+                    [protocol_version] => 1.1
+                    [success] => 1
+                    [redirects] => 0
+                    [url] => https://app.wbjet.com/api/send/template
+                    [history] => Array
+                        (
+                        )
+
+                    [cookies] => WpOrg\Requests\Cookie\Jar Object
+                        (
+                            [cookies:protected] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [filename:protected] => 
+        )
+
+)
+
+[2026-03-16 15:12:54] [AC Process] End of sequence. No more items to schedule.
+[2026-03-16 15:13:17] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:13:17] [AC Start] Session Key: 1
+[2026-03-16 15:13:17] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:13:35] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:13:35] [AC Start] Session Key: 1
+[2026-03-16 15:13:35] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:14:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:14:16] [AC Start] Session Key: 1
+[2026-03-16 15:14:16] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:14:19] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:14:19] [AC Start] Session Key: 1
+[2026-03-16 15:14:19] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:14:53] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:14:53] [AC Start] Session Key: 1
+[2026-03-16 15:14:53] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:15:10] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:15:10] [AC Start] Session Key: 1
+[2026-03-16 15:15:10] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:15:10] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:15:10] [AC Start] Session Key: 1
+[2026-03-16 15:15:10] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:15:36] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:15:36] [AC Start] Session Key: 1
+[2026-03-16 15:15:36] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:16:12] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:16:12] [AC Start] Session Key: 1
+[2026-03-16 15:16:12] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:16:55] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:16:55] [AC Start] Session Key: 1
+[2026-03-16 15:16:55] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:17:36] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:17:36] [AC Start] Session Key: 1
+[2026-03-16 15:17:36] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:18:14] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:18:14] [AC Start] Session Key: 1
+[2026-03-16 15:18:14] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:18:55] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:18:55] [AC Start] Session Key: 1
+[2026-03-16 15:18:55] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:20:13] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:20:13] [AC Start] Session Key: 1
+[2026-03-16 15:20:13] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:21:40] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:21:40] [AC Start] Session Key: 1
+[2026-03-16 15:21:40] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:22:14] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:22:14] [AC Start] Session Key: 1
+[2026-03-16 15:22:14] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:22:39] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:22:39] [AC Start] Session Key: 1
+[2026-03-16 15:22:39] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:24:40] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:24:40] [AC Start] Session Key: 1
+[2026-03-16 15:24:40] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:26:41] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:26:41] [AC Start] Session Key: 1
+[2026-03-16 15:26:41] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:28:42] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:28:42] [AC Start] Session Key: 1
+[2026-03-16 15:28:42] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:30:43] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:30:43] [AC Start] Session Key: 1
+[2026-03-16 15:30:43] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:25] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:25] [AC Start] Session Key: 1
+[2026-03-16 15:41:25] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:36] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:36] [AC Start] Session Key: 1
+[2026-03-16 15:41:36] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:36] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:36] [AC Start] Session Key: 1
+[2026-03-16 15:41:36] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:37] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:37] [AC Start] Session Key: 1
+[2026-03-16 15:41:37] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:37] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:37] [AC Start] Session Key: 1
+[2026-03-16 15:41:37] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:39] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:39] [AC Start] Session Key: 1
+[2026-03-16 15:41:39] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:41] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:41] [AC Start] Session Key: 1
+[2026-03-16 15:41:41] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:55] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:55] [AC Start] Session Key: 1
+[2026-03-16 15:41:55] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:41:57] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:41:57] [AC Start] Session Key: 1
+[2026-03-16 15:41:57] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:42:02] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:42:02] [AC Start] Session Key: 1
+[2026-03-16 15:42:02] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:42:31] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:42:31] [AC Start] Session Key: 1
+[2026-03-16 15:42:31] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:42:36] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:42:36] [AC Start] Session Key: 1
+[2026-03-16 15:42:36] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:42:39] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:42:39] [AC Start] Session Key: 1
+[2026-03-16 15:42:39] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:42:55] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:42:55] [AC Start] Session Key: 1
+[2026-03-16 15:42:55] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:43:10] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:43:10] [AC Start] Session Key: 1
+[2026-03-16 15:43:10] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:43:12] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:43:12] [AC Start] Session Key: 1
+[2026-03-16 15:43:12] [AC Start] Cart is empty. No new sequence will be scheduled.
+[2026-03-16 15:43:16] [AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.
+[2026-03-16 15:43:16] [AC Start] Session Key: 1
+[2026-03-16 15:43:16] [AC Start] Cart is empty. No new sequence will be scheduled.

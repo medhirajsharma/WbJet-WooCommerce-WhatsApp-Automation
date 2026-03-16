@@ -53,6 +53,12 @@ function swiftchatswc_handle_order_status_change($order_id, $old_status, $new_st
 
 function swiftchatswc_maybe_schedule_abandoned_cart_check()
 {
+    static $already_triggered = false;
+    if ($already_triggered) {
+        return;
+    }
+    $already_triggered = true;
+
     swiftchatswc_debug_log('[AC Start] `swiftchatswc_maybe_schedule_abandoned_cart_check` triggered.');
 
     if (!WC()->session || !WC()->session->has_session()) {
@@ -74,10 +80,7 @@ function swiftchatswc_maybe_schedule_abandoned_cart_check()
     swiftchatswc_debug_log("[AC Start] Session Key: {$session_key}");
 
     // Cancel any previously scheduled actions for this session to restart the sequence.
-    $unscheduled_count = as_unschedule_all_actions('swiftchatswc_check_abandoned_cart', array('session_key' => $session_key), 'swiftchats');
-    if ($unscheduled_count > 0) {
-        swiftchatswc_debug_log("[AC Start] Unscheduled {$unscheduled_count} existing actions for this session.");
-    }
+    swiftchatswc_unschedule_all_abandoned_cart_actions($session_key);
 
     if (WC()->cart->is_empty()) {
         swiftchatswc_debug_log('[AC Start] Cart is empty. No new sequence will be scheduled.');
@@ -127,7 +130,7 @@ function swiftchatswc_maybe_schedule_abandoned_cart_check()
             'swiftchatswc_check_abandoned_cart',
             array(
                 'session_key' => $session_key,
-                'sequence_item_id' => $first_sequence_item->id,
+                'sequence_item_id' => (int)$first_sequence_item->id,
             ),
             'swiftchats'
         );
@@ -152,23 +155,34 @@ function swiftchatswc_process_abandoned_cart($session_key, $sequence_item_id)
     swiftchatswc_debug_log("[AC Process] Found current sequence item: " . print_r($current_sequence_item, true));
 
 
+    // Ensure WC_Session is available in background/cron context
+    if (null === WC()->session || ! (WC()->session instanceof WC_Session)) {
+        require_once WC_ABSPATH . 'includes/class-wc-session-handler.php';
+        WC()->session = new WC_Session_Handler();
+        WC()->session->init();
+        swiftchatswc_debug_log("[AC Process] Initialized WC_Session_Handler manually.");
+    }
+
     $session_handler = WC()->session;
     if (!$session_handler || !method_exists($session_handler, 'get_session')) {
-        swiftchatswc_debug_log("[AC Process] Exiting: WC_Session handler not available.");
+        swiftchatswc_debug_log("[AC Process] Exiting: WC_Session handler STILL NOT available.");
         return;
     }
     
     $cart = $session_handler->get_session($session_key);
     if (!$cart || empty($cart['cart'])) {
-        swiftchatswc_debug_log("[AC Process] Exiting: Cart is empty or session has expired for key: {$session_key}. Sequence terminated.");
+        $session_dump = print_r($cart, true);
+        swiftchatswc_debug_log("[AC Process] Exiting: Cart is empty or session has expired for key: {$session_key}. Session Dump: {$session_dump}");
         return;
     }
 
     $customer_data = isset($cart['customer']) ? (is_string($cart['customer']) ? maybe_unserialize($cart['customer']) : $cart['customer']) : null;
     if (!$customer_data || !is_array($customer_data)) {
-        swiftchatswc_debug_log("[AC Process] Exiting: Customer data not found or is invalid.");
+        swiftchatswc_debug_log("[AC Process] Exiting: Customer data not found in session. Session Data: " . print_r($cart, true));
         return;
     }
+
+    swiftchatswc_debug_log("[AC Process] Customer data found: " . print_r($customer_data, true));
 
     $phone = $customer_data['billing_phone'] ?? $customer_data['phone'] ?? '';
     if (empty($phone)) {
@@ -222,7 +236,7 @@ function swiftchatswc_process_abandoned_cart($session_key, $sequence_item_id)
             'swiftchatswc_check_abandoned_cart',
             array(
                 'session_key' => $session_key,
-                'sequence_item_id' => $next_sequence_item->id,
+                'sequence_item_id' => (int)$next_sequence_item->id,
             ),
             'swiftchats'
         );
@@ -240,13 +254,35 @@ function swiftchatswc_cancel_abandoned_cart_on_purchase($order_id) {
     }
     $session_key = WC()->session->get_customer_id();
     if ($session_key) {
-        $unscheduled_count = as_unschedule_all_actions('swiftchatswc_check_abandoned_cart', array('session_key' => $session_key), 'swiftchats');
-        if ($unscheduled_count > 0) {
-            swiftchatswc_debug_log("[AC Cancel] Successfully unscheduled {$unscheduled_count} pending actions for session_key: {$session_key}.");
-        } else {
-            swiftchatswc_debug_log("[AC Cancel] No pending actions found to unschedule for session_key: {$session_key}.");
-        }
+        swiftchatswc_unschedule_all_abandoned_cart_actions($session_key);
+        swiftchatswc_debug_log("[AC Cancel] Successfully unscheduled pending actions for session_key: {$session_key}.");
     } else {
         swiftchatswc_debug_log("[AC Cancel] Exiting: No session_key found to cancel.");
     }
+}
+
+/**
+ * Helper function to unschedule ALL abandoned cart actions for a session.
+ * This is necessary because Action Scheduler requires exact argument matches.
+ */
+function swiftchatswc_unschedule_all_abandoned_cart_actions($session_key) {
+    global $wpdb;
+    $sequence_table = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+    
+    // Get all possible sequence item IDs to ensure we match the exact arguments scheduled
+    $ids = $wpdb->get_col("SELECT id FROM $sequence_table");
+    
+    if (!empty($ids)) {
+        foreach ($ids as $id) {
+            as_unschedule_all_actions('swiftchatswc_check_abandoned_cart', array(
+                'session_key' => $session_key,
+                'sequence_item_id' => (int)$id,
+            ), 'swiftchats');
+        }
+    }
+
+    // Also clear any action that might have been scheduled with just the session key
+    as_unschedule_all_actions('swiftchatswc_check_abandoned_cart', array(
+        'session_key' => $session_key,
+    ), 'swiftchats');
 }
