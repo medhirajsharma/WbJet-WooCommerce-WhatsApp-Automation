@@ -28,9 +28,9 @@
             $template_name = '';
             $template_metadata = '';
 
-            if ($order_status === 'abandoned_cart') {
-                $message_template = 'abandoned_cart_sequence';
-                $template_name = 'Abandoned Cart Sequence';
+            if ($order_status === 'abandoned_cart' || $order_status === 'post_purchase_review') {
+                $message_template = $order_status . '_sequence';
+                $template_name = ($order_status === 'abandoned_cart' ? 'Abandoned Cart' : 'Post-Purchase Review') . ' Sequence';
             } else {
                 if (empty($_POST['message_template'])) {
                     add_settings_error('WBWWAwc_messages', 'validation', 'Message template is required.', 'error');
@@ -68,7 +68,7 @@
             if ($result === false) {
                 add_settings_error('WBWWAwc_messages', 'db', 'Failed to save trigger.', 'error');
             } else {
-                if ($order_status === 'abandoned_cart') {
+            if ($order_status === 'abandoned_cart' || $order_status === 'post_purchase_review') {
                     $sequence_table_name = $wpdb->prefix . 'WBWWA_abandoned_cart_sequence';
                     
                     $wpdb->delete($sequence_table_name, ['trigger_id' => $trigger_id]);
@@ -120,7 +120,7 @@
             if ($trigger) {
                 $trigger->variable_mappings = ! empty($trigger->variable_mappings) ? json_decode($trigger->variable_mappings, true) : [];
 
-                if ($trigger->order_status === 'abandoned_cart') {
+                if ($trigger->order_status === 'abandoned_cart' || $trigger->order_status === 'post_purchase_review') {
                     $sequence_table_name = $wpdb->prefix . 'WBWWA_abandoned_cart_sequence';
                     $sequence_items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $sequence_table_name WHERE trigger_id = %d ORDER BY sequence_order ASC", $trigger_id));
                 }
@@ -128,7 +128,8 @@
         }
     }
     $order_statuses                   = wc_get_order_statuses();
-    $order_statuses['abandoned_cart'] = 'Abandoned Cart';
+    $order_statuses['abandoned_cart'] = 'Abandoned Cart (Sequence)';
+    $order_statuses['post_purchase_review'] = 'Post-Purchase Review Request (Sequence)';
     $page_title                       = $trigger ? 'Edit Trigger' : 'Add New Trigger';
 ?>
 <div class="wrap WBWWA-admin">
@@ -198,7 +199,7 @@
                         </div>
 
                         <div id="abandoned_cart_sequence_settings" style="display: none;">
-                            <h4>Abandoned Cart Reminders Sequence</h4>
+                            <h4 id="sequence_title">Reminders Sequence</h4>
                             <div id="sequence_items_container">
                                 <!-- Sequence items will be added here dynamically -->
                             </div>
@@ -493,10 +494,16 @@
         // --- UI TOGGLING ---
         function toggleTriggerFields() {
             const orderStatus = $('#order_status').val();
-            if (orderStatus === 'abandoned_cart') {
+            if (orderStatus === 'abandoned_cart' || orderStatus === 'post_purchase_review') {
                 $('#default_trigger_settings').hide();
                 $('#abandoned_cart_sequence_settings').show();
                 $('#message_template').prop('required', false);
+                
+                if (orderStatus === 'post_purchase_review') {
+                    $('#sequence_title').text('Post-Purchase Review Sequence');
+                } else {
+                    $('#sequence_title').text('Abandoned Cart Reminders Sequence');
+                }
             } else {
                 $('#default_trigger_settings').show();
                 $('#abandoned_cart_sequence_settings').hide();

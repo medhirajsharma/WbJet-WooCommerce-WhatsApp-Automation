@@ -19,6 +19,10 @@ add_action('woocommerce_cart_updated', 'WBWWAwc_maybe_schedule_abandoned_cart_ch
 add_action('WBWWAwc_check_abandoned_cart', 'WBWWAwc_process_abandoned_cart', 10, 2);
 add_action('woocommerce_checkout_order_processed', 'WBWWAwc_cancel_abandoned_cart_on_purchase', 10, 1);
 
+// Post-Purchase Review Sequence Logic
+add_action('woocommerce_order_status_completed', 'WBWWAwc_handle_post_purchase_review', 10, 1);
+add_action('WBWWAwc_check_post_purchase_review', 'WBWWAwc_process_post_purchase_sequence', 10, 2);
+
 // Admin/Business Notifications Logic
 add_action('woocommerce_order_status_changed', 'WBWWAwc_handle_business_notification', 20, 4);
 
@@ -346,3 +350,105 @@ function WBWWAwc_unschedule_all_abandoned_cart_actions($session_key) {
     ), 'WBWWA');
 }
 
+/**
+ * Post-Purchase Review Sequence Handlers
+ */
+function WBWWAwc_handle_post_purchase_review($order_id) {
+    global $wpdb;
+    WBWWAwc_debug_log("[Review Start] Handling completed order: {$order_id}");
+
+    $trigger_table = $wpdb->prefix . 'WBWWA_triggers';
+    $sequence_table = $wpdb->prefix . 'WBWWA_abandoned_cart_sequence';
+
+    $trigger = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $trigger_table WHERE order_status = %s AND is_active = 1",
+        'post_purchase_review'
+    ));
+
+    if (!$trigger) {
+        WBWWAwc_debug_log('[Review Start] Exiting: No active "post_purchase_review" trigger found.');
+        return;
+    }
+
+    $first_item = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $sequence_table WHERE trigger_id = %d ORDER BY sequence_order ASC LIMIT 1",
+        $trigger->id
+    ));
+
+    if (!$first_item) {
+        WBWWAwc_debug_log("[Review Start] Exiting: No sequence items found for trigger ID: {$trigger->id}.");
+        return;
+    }
+
+    $delay = 0;
+    switch ($first_item->time_unit) {
+        case 'minutes': $delay = (int)$first_item->time_interval * MINUTE_IN_SECONDS; break;
+        case 'hours': $delay = (int)$first_item->time_interval * HOUR_IN_SECONDS; break;
+        case 'days': $delay = (int)$first_item->time_interval * DAY_IN_SECONDS; break;
+    }
+
+    if ($delay > 0) {
+        $scheduled_time = time() + $delay;
+        as_schedule_single_action(
+            $scheduled_time,
+            'WBWWAwc_check_post_purchase_review',
+            array('order_id' => $order_id, 'sequence_item_id' => (int)$first_item->id),
+            'WBWWA'
+        );
+        WBWWAwc_debug_log("[Review Start] Scheduled first review for Order {$order_id} at " . date('Y-m-d H:i:s', $scheduled_time));
+    }
+}
+
+function WBWWAwc_process_post_purchase_sequence($order_id, $sequence_item_id) {
+    global $wpdb;
+    WBWWAwc_debug_log("[Review Process] Running for Order: {$order_id}, Item: {$sequence_item_id}");
+
+    $order = wc_get_order($order_id);
+    if (!$order) {
+        WBWWAwc_debug_log("[Review Process] Exiting: Order {$order_id} not found.");
+        return;
+    }
+
+    // Don't send if order is no longer completed
+    if ($order->get_status() !== 'completed') {
+        WBWWAwc_debug_log("[Review Process] Exiting: Order {$order_id} status is no longer 'completed' (currently '{$order->get_status()}').");
+        return;
+    }
+
+    $sequence_table = $wpdb->prefix . 'WBWWA_abandoned_cart_sequence';
+    $current_item = $wpdb->get_row($wpdb->prepare("SELECT * FROM $sequence_table WHERE id = %d", $sequence_item_id));
+
+    if (!$current_item) return;
+
+    $phone = $order->get_billing_phone();
+    if (empty($phone)) return;
+
+    require_once plugin_dir_path(__FILE__) . 'api-handler.php';
+    $api_handler = new WBWWAWC_API_Handler();
+    $template_info = $api_handler->get_template_by_uuid($current_item->message_template_id);
+
+    if ($template_info && !is_wp_error($template_info)) {
+        $template_metadata = json_decode($template_info['metadata'], true);
+        $variable_mappings = $current_item->variable_mappings ? json_decode($current_item->variable_mappings, true) : [];
+        $api_handler->send_template_with_metadata($phone, $template_metadata, $variable_mappings, $order);
+        WBWWAwc_debug_log("[Review Process] Sent message for Order {$order_id}");
+    }
+
+    // Schedule next
+    $next_item = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $sequence_table WHERE trigger_id = %d AND sequence_order > %d ORDER BY sequence_order ASC LIMIT 1",
+        $current_item->trigger_id, $current_item->sequence_order
+    ));
+
+    if ($next_item) {
+        $delay = 0;
+        switch ($next_item->time_unit) {
+            case 'minutes': $delay = (int)$next_item->time_interval * MINUTE_IN_SECONDS; break;
+            case 'hours': $delay = (int)$next_item->time_interval * HOUR_IN_SECONDS; break;
+            case 'days': $delay = (int)$next_item->time_interval * DAY_IN_SECONDS; break;
+        }
+        if ($delay > 0) {
+            as_schedule_single_action(time() + $delay, 'WBWWAwc_check_post_purchase_review', array('order_id' => $order_id, 'sequence_item_id' => (int)$next_item->id), 'WBWWA');
+        }
+    }
+}
