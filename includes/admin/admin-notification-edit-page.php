@@ -112,11 +112,17 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
                                 <option value="" disabled <?php if (!$notification) echo 'selected'; ?>>Select Order Status</option>
                                 <?php
                                 foreach ($order_statuses as $status => $label) {
+                                    $display_label = $label;
+                                    if ($status === 'wc-processing') {
+                                        $display_label = 'New Order (Processing)';
+                                    } elseif ($status === 'wc-on-hold') {
+                                        $display_label = 'New Order (On hold)';
+                                    }
                                     printf(
                                         '<option value="%s" %s>%s</option>',
                                         esc_attr($status),
                                         selected($notification ? ($notification->order_status ?? '') : '', $status, false),
-                                        esc_html($label)
+                                        esc_html($display_label)
                                     );
                                 }
                                 ?>
