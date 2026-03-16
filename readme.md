@@ -1,5 +1,5 @@
 === WBWWA for WooCommerce ===  
-Contributors: Axis96 Digital  
+Contributors: Dhiraj Sharma
 Tags: WhatsApp, WooCommerce, Order Alerts, Chat Support, Messaging Widget  
 Requires at least: 4.7  
 Tested up to: 6.7.1  
