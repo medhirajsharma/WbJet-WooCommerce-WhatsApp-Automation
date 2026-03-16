@@ -1,24 +1,24 @@
 <?php
-    // This file renders the Add/Edit Trigger admin page for SwiftChats
+    // This file renders the Add/Edit Trigger admin page for WBWWA
     if (! defined('ABSPATH')) {
         exit;
     }
 
     global $plugin_page, $parent_file, $wpdb;
-    $plugin_page = 'swiftchatswc-triggers';
-    $parent_file = 'swiftchatswc';
-    $table_name  = $wpdb->prefix . 'swiftchats_triggers';
+    $plugin_page = 'WBWWAwc-triggers';
+    $parent_file = 'WBWWAwc';
+    $table_name  = $wpdb->prefix . 'WBWWA_triggers';
     require_once plugin_dir_path(__FILE__) . '../api-handler.php';
-    $api_handler = new SwiftChatsWC_API_Handler();
+    $api_handler = new WBWWAWC_API_Handler();
     $templates   = $api_handler->get_cached_templates();
     if (is_wp_error($templates)) {
-        wp_redirect(admin_url('admin.php?page=swiftchatswc-triggers'));
+        wp_redirect(admin_url('admin.php?page=WBWWAwc-triggers'));
         exit;
     }
     // Handle add/edit form submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array($_POST['action'], ['add', 'edit'])) {
-        if (!isset($_POST['order_status'], $_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'swiftchats_trigger_nonce')) {
-            add_settings_error('swiftchatswc_messages', 'nonce', 'Security check failed. Please try again.', 'error');
+        if (!isset($_POST['order_status'], $_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'WBWWA_trigger_nonce')) {
+            add_settings_error('WBWWAwc_messages', 'nonce', 'Security check failed. Please try again.', 'error');
         } else {
             $order_status = sanitize_text_field($_POST['order_status']);
             $is_active = isset($_POST['is_active']) ? 1 : 0;
@@ -33,7 +33,7 @@
                 $template_name = 'Abandoned Cart Sequence';
             } else {
                 if (empty($_POST['message_template'])) {
-                    add_settings_error('swiftchatswc_messages', 'validation', 'Message template is required.', 'error');
+                    add_settings_error('WBWWAwc_messages', 'validation', 'Message template is required.', 'error');
                     return;
                 }
                 $message_template = sanitize_text_field($_POST['message_template']);
@@ -66,10 +66,10 @@
             }
 
             if ($result === false) {
-                add_settings_error('swiftchatswc_messages', 'db', 'Failed to save trigger.', 'error');
+                add_settings_error('WBWWAwc_messages', 'db', 'Failed to save trigger.', 'error');
             } else {
                 if ($order_status === 'abandoned_cart') {
-                    $sequence_table_name = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+                    $sequence_table_name = $wpdb->prefix . 'WBWWA_abandoned_cart_sequence';
                     
                     $wpdb->delete($sequence_table_name, ['trigger_id' => $trigger_id]);
 
@@ -104,7 +104,7 @@
                         }
                     }
                 }
-                $redirect_url = $_POST['action'] === 'add' ? 'admin.php?page=swiftchatswc-triggers&msg=added' : 'admin.php?page=swiftchatswc-triggers&msg=updated';
+                $redirect_url = $_POST['action'] === 'add' ? 'admin.php?page=WBWWAwc-triggers&msg=added' : 'admin.php?page=WBWWAwc-triggers&msg=updated';
                 wp_redirect(admin_url($redirect_url));
                 exit;
             }
@@ -121,7 +121,7 @@
                 $trigger->variable_mappings = ! empty($trigger->variable_mappings) ? json_decode($trigger->variable_mappings, true) : [];
 
                 if ($trigger->order_status === 'abandoned_cart') {
-                    $sequence_table_name = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+                    $sequence_table_name = $wpdb->prefix . 'WBWWA_abandoned_cart_sequence';
                     $sequence_items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $sequence_table_name WHERE trigger_id = %d ORDER BY sequence_order ASC", $trigger_id));
                 }
             }
@@ -131,9 +131,9 @@
     $order_statuses['abandoned_cart'] = 'Abandoned Cart';
     $page_title                       = $trigger ? 'Edit Trigger' : 'Add New Trigger';
 ?>
-<div class="wrap swiftchats-admin">
-    <div class="swiftchats-layout">
-        <div class="swiftchats-main">
+<div class="wrap WBWWA-admin">
+    <div class="WBWWA-layout">
+        <div class="WBWWA-main">
             <div class="trigger-form-premium-card">
                 <div class="trigger-form-hero">
                     <span class="hero-icon-premium"><span class="dashicons dashicons-format-chat"></span></span>
@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 <form method="post" action="" autocomplete="off">
-                    <?php wp_nonce_field('swiftchats_trigger_nonce'); ?>
+                    <?php wp_nonce_field('WBWWA_trigger_nonce'); ?>
                     <input type="hidden" name="action" value="<?php echo $trigger ? 'edit' : 'add'; ?>">
                     <?php if ($trigger): ?>
                         <input type="hidden" name="trigger_id" value="<?php echo esc_attr($trigger->id); ?>">
@@ -152,7 +152,7 @@
                         <h3>Trigger Details</h3>
                         <div class="form-field form-field-wide">
                             <label for="order_status" style="color: #777; font-size: 13px; line-height: 1.5;">Order Status:</label>
-                            <select name="order_status" id="order_status" required class="swiftchats-select">
+                            <select name="order_status" id="order_status" required class="WBWWA-select">
                                 <option value="" disabled                                                          <?php if (! $trigger) {
                                                                   echo 'selected';
                                                           }
@@ -173,7 +173,7 @@
                         <div id="default_trigger_settings">
                             <div class="form-field form-field-wide">
                                 <label for="message_template">Message Template</label>
-                                <select name="message_template" id="message_template" required class="swiftchats-select">
+                                <select name="message_template" id="message_template" required class="WBWWA-select">
                                     <option value="" disabled <?php if (!$trigger) { echo 'selected'; } ?>>Select Template</option>
                                     <?php
                                     foreach ($templates as $template) {
@@ -218,12 +218,12 @@
                     <hr class="form-divider-premium" />
                     <div class="sticky-action-bar-premium">
                         <button type="submit" class="button button-primary">Save Trigger</button>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-triggers')); ?>" class="button">Cancel</a>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-triggers')); ?>" class="button">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="swiftchats-sidebar">
+        <div class="WBWWA-sidebar">
             <div class="wa-device-frame">
                 <div class="wa-header-bar">
                     <span class="wa-logo"><span class="dashicons dashicons-whatsapp"></span></span>
@@ -241,9 +241,9 @@
         </div>
     </div>
     <style>
-    .swiftchats-layout { display: flex; gap: 20px; margin-top: 20px; }
-    .swiftchats-main { flex: 1; }
-    .swiftchats-sidebar { width: 350px; }
+    .WBWWA-layout { display: flex; gap: 20px; margin-top: 20px; }
+    .WBWWA-main { flex: 1; }
+    .WBWWA-sidebar { width: 350px; }
     .form-field { margin-bottom: 20px; }
     .form-field label { display: block; margin-bottom: 8px; font-weight: 600; }
     .form-field input[type="text"],
@@ -456,7 +456,7 @@
             border-radius: 0 0 10px 10px;
         }
     }
-    .swiftchats-select {
+    .WBWWA-select {
         width: 100%;
         padding: 14px 38px 14px 18px;
         font-size: 1.08rem;
@@ -469,7 +469,7 @@
         box-shadow: 0 1.5px 4px rgba(37,211,102,0.04);
         transition: border-color 0.18s, box-shadow 0.18s;
     }
-    .swiftchats-select:focus {
+    .WBWWA-select:focus {
         border-color: #25d366;
         box-shadow: 0 2px 8px rgba(37,211,102,0.13);
     }
@@ -578,7 +578,7 @@
                         mappingsHtml += `
                             <div class="variable-mapping">
                                 <label>${part.charAt(0).toUpperCase() + part.slice(1)} Variable {{${variable}}}</label>
-                                <select name="${name}" class="variable-select swiftchats-select">${options}</select>
+                                <select name="${name}" class="variable-select WBWWA-select">${options}</select>
                             </div>`;
                     });
                     mappingsHtml += '</div>';
@@ -602,7 +602,7 @@
                             innerHtml += `
                                 <div class="variable-mapping">
                                     <label for="${name}">${label}</label>
-                                    <input type="text" id="${name}" name="${name}" value="${button.url || ''}" class="variable-input swiftchats-input" style="flex: 1 1 50%;">
+                                    <input type="text" id="${name}" name="${name}" value="${button.url || ''}" class="variable-input WBWWA-input" style="flex: 1 1 50%;">
                                 </div>`;
                         } else if (button.type === 'PHONE_NUMBER') {
                             const name = isSequence ? `${seqBaseName}[phone_number]` : `${baseName}[phone_number]`;
@@ -610,7 +610,7 @@
                             innerHtml += `
                                 <div class="variable-mapping">
                                     <label for="${name}">${label}</label>
-                                    <input type="text" id="${name}" name="${name}" value="${button.phone_number || ''}" class="variable-input swiftchats-input" style="flex: 1 1 50%;">
+                                    <input type="text" id="${name}" name="${name}" value="${button.phone_number || ''}" class="variable-input WBWWA-input" style="flex: 1 1 50%;">
                                 </div>`;
                         } else if (button.type === 'COPY_CODE') {
                             const name = isSequence ? `${seqBaseName}[coupon_code]` : `${baseName}[coupon_code]`;
@@ -619,7 +619,7 @@
                             innerHtml += `
                                 <div class="variable-mapping">
                                     <label for="${name}">${label}</label>
-                                    <input type="text" id="${name}" name="${name}" value="${exampleValue}" class="variable-input swiftchats-input" placeholder="Enter coupon code" style="flex: 1 1 50%;">
+                                    <input type="text" id="${name}" name="${name}" value="${exampleValue}" class="variable-input WBWWA-input" placeholder="Enter coupon code" style="flex: 1 1 50%;">
                                 </div>`;
                         }
                     });
@@ -666,7 +666,7 @@
                     </div>
                     <div class="form-field">
                         <label style="font-weight: bold;">Template</label>
-                        <select name="sequence[${sequenceIndex}][message_template]" class="sequence-template swiftchats-select" required>${optionsHtml}</select>
+                        <select name="sequence[${sequenceIndex}][message_template]" class="sequence-template WBWWA-select" required>${optionsHtml}</select>
                     </div>
                     <div class="sequence-variable-mappings" style="padding: 10px 0;"></div>
                     <button type="button" class="button remove-sequence-item">Remove</button>
@@ -748,8 +748,8 @@
         $('#order_status').on('change', toggleTriggerFields);
         $('#add_sequence_item').on('click', () => addSequenceItem());
         $('#sequence_items_container').on('click', '.remove-sequence-item', function() { $(this).closest('.sequence-item').remove(); });
-        $('.swiftchats-main').on('change', '#message_template, .sequence-template', function() { updateTemplateUI($(this)); });
+        $('.WBWWA-main').on('change', '#message_template, .sequence-template', function() { updateTemplateUI($(this)); });
     });
     </script>
 </div>
-<?php settings_errors('swiftchatswc_messages'); ?>
+<?php settings_errors('WBWWAwc_messages'); ?>

@@ -1,11 +1,11 @@
 <?php
-// This file renders the Notifications admin page for SwiftChats
+// This file renders the Notifications admin page for WBWWA
 // (Copy the notifications page code from admin-menu.php here)
 if (!defined('ABSPATH')) exit;
 global $wpdb;
-$table_name = $wpdb->prefix . 'swiftchats_notifications';
+$table_name = $wpdb->prefix . 'WBWWA_notifications';
 require_once plugin_dir_path(__FILE__) . '../api-handler.php';
-$api_handler = new SwiftChatsWC_API_Handler();
+$api_handler = new WBWWAWC_API_Handler();
 $templates = $api_handler->get_cached_templates();
 $has_api_error = is_wp_error($templates);
 $notifications_per_page = 5;
@@ -14,24 +14,24 @@ $total_notifications = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
 $total_pages = ceil($total_notifications / $notifications_per_page);
 $offset = ($paged - 1) * $notifications_per_page;
 $notifications = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY id DESC LIMIT %d OFFSET %d", $notifications_per_page, $offset));
-settings_errors('swiftchatswc_messages');
+settings_errors('WBWWAwc_messages');
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete' && !empty($_POST['notification_id'])) {
-    if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'swiftchats_notification_nonce')) {
-        add_settings_error('swiftchatswc_messages', 'nonce', 'Security check failed. Please try again.', 'error');
+    if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'WBWWA_notification_nonce')) {
+        add_settings_error('WBWWAwc_messages', 'nonce', 'Security check failed. Please try again.', 'error');
     } else {
         $notification_id = absint($_POST['notification_id']);
         $deleted = $wpdb->delete($table_name, array('id' => $notification_id));
         if ($deleted) {
-            wp_redirect(admin_url('admin.php?page=swiftchatswc-notifications&msg=deleted'));
+            wp_redirect(admin_url('admin.php?page=WBWWAwc-notifications&msg=deleted'));
             exit;
         } else {
-            add_settings_error('swiftchatswc_messages', 'db', 'Failed to delete notification.', 'error');
+            add_settings_error('WBWWAwc_messages', 'db', 'Failed to delete notification.', 'error');
         }
     }
 }
 ?>
-<div class="wrap swiftchats-admin">
-    <div class="swiftchats-hero-card">
+<div class="wrap WBWWA-admin">
+    <div class="WBWWA-hero-card">
         <div class="hero-icon">
             <span class="dashicons dashicons-megaphone"></span>
         </div>
@@ -42,21 +42,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             </p>
         </div>
         <?php if (!$has_api_error): ?>
-            <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-notification-edit')); ?>" class="button swiftchats-modern-btn add-notification-btn">
+            <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-notification-edit')); ?>" class="button WBWWA-modern-btn add-notification-btn">
                 <span class="dashicons dashicons-format-chat"></span> <span>Add New Notification</span>
             </a>
         <?php endif; ?>
     </div>
     <?php if ($has_api_error): ?>
-        <div class="swiftchats-card swiftchats-api-notice">
+        <div class="WBWWA-card WBWWA-api-notice">
             <h2><span class="dashicons dashicons-warning"></span> API Configuration Required</h2>
             <p>To start creating notifications, you need to configure the API settings first.</p>
-            <p>Please go to the <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-settings&tab=api')); ?>">API Settings</a> page and configure your API key.</p>
+            <p>Please go to the <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-settings&tab=api')); ?>">API Settings</a> page and configure your API key.</p>
         </div>
     <?php endif; ?>
     <?php if (!$has_api_error): ?>
-        <div class="swiftchats-card notifications-table-card">
-            <table class="swiftchats-table notifications-table">
+        <div class="WBWWA-card notifications-table-card">
+            <table class="WBWWA-table notifications-table">
                 <thead>
                     <tr>
                         <th>Order Status</th>
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         <tr>
                             <td colspan="4" class="empty-table">
                                 <span class="dashicons dashicons-info"></span>
-                                No notifications found. <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-notification-edit')); ?>">Add one?</a>
+                                No notifications found. <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-notification-edit')); ?>">Add one?</a>
                             </td>
                         </tr>
                     <?php else : ?>
@@ -100,10 +100,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-notification-edit&id=' . $notification->id)); ?>"
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-notification-edit&id=' . $notification->id)); ?>"
                                        class="table-action edit" title="Edit"><span class="dashicons dashicons-edit"></span></a>
                                     <form method="post" action="" style="display:inline;">
-                                        <?php wp_nonce_field('swiftchats_notification_nonce'); ?>
+                                        <?php wp_nonce_field('WBWWA_notification_nonce'); ?>
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="notification_id" value="<?php echo esc_attr($notification->id); ?>">
                                         <button type="submit" class="table-action delete" title="Delete"
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 </tbody>
             </table>
             <?php if ($total_pages > 1): ?>
-            <div class="swiftchats-pagination">
+            <div class="WBWWA-pagination">
                 <?php if ($paged > 1): ?>
                     <a class="page-numbers prev" href="<?php echo esc_url(add_query_arg('paged', $paged - 1)); ?>">&laquo; Prev</a>
                 <?php endif; ?>
@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 @media (max-width: 700px) {
     .notifications-table { min-width: 500px; }
 }
-.swiftchats-hero-card {
+.WBWWA-hero-card {
     display: flex;
     align-items: center;
     background: #fff;
@@ -230,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     gap: 28px;
     flex-wrap: wrap;
 }
-.swiftchats-hero-card .hero-icon {
+.WBWWA-hero-card .hero-icon {
     font-size: 48px;
     color: #25d366;
     background: #eafbe7;
@@ -242,18 +242,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     justify-content: center;
     box-shadow: 0 2px 8px rgba(37,211,102,0.07);
 }
-.swiftchats-hero-card .hero-content {
+.WBWWA-hero-card .hero-content {
     flex: 1 1 300px;
     min-width: 220px;
 }
-.swiftchats-hero-card h1 {
+.WBWWA-hero-card h1 {
     margin: 0 0 8px 0;
     font-size: 2.1rem;
     font-weight: 700;
     color: #1d2327;
     letter-spacing: -1px;
 }
-.swiftchats-hero-card .hero-subtitle {
+.WBWWA-hero-card .hero-subtitle {
     margin: 0;
     color: #4a5568;
     font-size: 1.08rem;
@@ -289,7 +289,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     transition: color 0.18s;
 }
 @media (max-width: 700px) {
-    .swiftchats-hero-card {
+    .WBWWA-hero-card {
         flex-direction: column;
         align-items: flex-start;
         padding: 22px 12px 18px 12px;
@@ -303,14 +303,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         padding: 14px 0;
     }
 }
-.swiftchats-pagination {
+.WBWWA-pagination {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 6px;
     margin: 18px 0 0 0;
 }
-.swiftchats-pagination .page-numbers {
+.WBWWA-pagination .page-numbers {
     display: inline-block;
     padding: 7px 14px;
     border-radius: 7px;
@@ -322,12 +322,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     border: 1px solid #e0e0e0;
     font-size: 1em;
 }
-.swiftchats-pagination .page-numbers.current, .swiftchats-pagination .page-numbers:hover {
+.WBWWA-pagination .page-numbers.current, .WBWWA-pagination .page-numbers:hover {
     background: #25d366;
     color: #fff;
     border-color: #25d366;
 }
-.swiftchats-pagination .page-numbers.prev, .swiftchats-pagination .page-numbers.next {
+.WBWWA-pagination .page-numbers.prev, .WBWWA-pagination .page-numbers.next {
     font-size: 1.08em;
     font-weight: 700;
 }

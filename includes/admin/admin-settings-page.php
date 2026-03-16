@@ -1,13 +1,13 @@
 <?php
-// This file renders the Settings admin page for SwiftChats
+// This file renders the Settings admin page for WBWWA
 if (!defined('ABSPATH')) exit;
 require_once plugin_dir_path(__FILE__) . '../api-handler.php';
 // Handle manual save
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['swiftchatswc_options'])) {
-    check_admin_referer('swiftchatswc_save_settings', 'swiftchatswc_nonce');
-    $current_tab = isset($_POST['swiftchatswc_current_tab']) ? sanitize_text_field($_POST['swiftchatswc_current_tab']) : 'general';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['WBWWAwc_options'])) {
+    check_admin_referer('WBWWAwc_save_settings', 'WBWWAwc_nonce');
+    $current_tab = isset($_POST['WBWWAwc_current_tab']) ? sanitize_text_field($_POST['WBWWAwc_current_tab']) : 'general';
     
-    $new = $_POST['swiftchatswc_options'];
+    $new = $_POST['WBWWAwc_options'];
 
     // If a checkbox is not in the POST data, it means it was unchecked. We need to explicitly set its value to '0'.
     if ($current_tab === 'widget') {
@@ -25,55 +25,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['swiftchatswc_options'
     }
 
     $new = array_map('sanitize_text_field', $new);
-    $existing = get_option('swiftchatswc_options', array());
+    $existing = get_option('WBWWAwc_options', array());
 
     // API key validation if on API tab
     if ($current_tab === 'api' && isset($new['api_key'])) {
-        $api_handler = new SwiftChatsWC_API_Handler();
+        $api_handler = new WBWWAWC_API_Handler();
         $verify_result = $api_handler->verify_api_key($new['api_key']);
         if (is_wp_error($verify_result)) {
             $error_message = $verify_result->get_error_message();
-            add_settings_error('swiftchatswc_messages', 'swiftchatswc_api_key_invalid', __('API Key is invalid: ', 'swiftchatswc') . esc_html($error_message), 'error');
+            add_settings_error('WBWWAwc_messages', 'WBWWAwc_api_key_invalid', __('API Key is invalid: ', 'WBWWAwc') . esc_html($error_message), 'error');
             $options = array_merge($existing, $new); // Show entered value but do not save
         } else {
             $options = array_merge($existing, $new);
-            update_option('swiftchatswc_options', $options);
-            add_settings_error('swiftchatswc_messages', 'swiftchatswc_message', __('Settings Saved', 'swiftchatswc'), 'updated');
+            update_option('WBWWAwc_options', $options);
+            add_settings_error('WBWWAwc_messages', 'WBWWAwc_message', __('Settings Saved', 'WBWWAwc'), 'updated');
         }
     } else {
         $options = array_merge($existing, $new);
-        update_option('swiftchatswc_options', $options);
-        add_settings_error('swiftchatswc_messages', 'swiftchatswc_message', __('Settings Saved', 'swiftchatswc'), 'updated');
+        update_option('WBWWAwc_options', $options);
+        add_settings_error('WBWWAwc_messages', 'WBWWAwc_message', __('Settings Saved', 'WBWWAwc'), 'updated');
     }
 } else {
-    $options = get_option('swiftchatswc_options', array());
+    $options = get_option('WBWWAwc_options', array());
     $current_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
 }
 if (isset($_GET['settings-updated'])) {
-    $api_errors = get_settings_errors('swiftchatswc_options');
+    $api_errors = get_settings_errors('WBWWAwc_options');
     if (empty($api_errors)) {
-        add_settings_error('swiftchatswc_messages', 'swiftchatswc_message', __('Settings Saved', 'swiftchatswc'), 'updated');
+        add_settings_error('WBWWAwc_messages', 'WBWWAwc_message', __('Settings Saved', 'WBWWAwc'), 'updated');
     }
 }
-settings_errors('swiftchatswc_options');
+settings_errors('WBWWAwc_options');
 
 ?>
-<div class="wrap swiftchats-admin">
-    <div class="swiftchats-hero-card">
+<div class="wrap WBWWA-admin">
+    <div class="WBWWA-hero-card">
         <div class="hero-icon">
             <span class="dashicons dashicons-admin-generic"></span>
         </div>
         <div class="hero-content">
             <h1>Settings</h1>
             <p class="hero-subtitle">
-                Configure your WhatsApp integration, business info, WooCommerce, and chat widget settings for SwiftChats.
+                Configure your WhatsApp integration, business info, WooCommerce, and chat widget settings for WBWWA.
             </p>
         </div>
     </div>
-    <?php if ($messages = get_settings_errors('swiftchatswc_options')): ?>
-        <div class="swiftchats-message-card">
+    <?php if ($messages = get_settings_errors('WBWWAwc_options')): ?>
+        <div class="WBWWA-message-card">
             <?php foreach ($messages as $msg): ?>
-                <div class="swiftchats-message swiftchats-message-<?php echo esc_attr($msg['type']); ?>">
+                <div class="WBWWA-message WBWWA-message-<?php echo esc_attr($msg['type']); ?>">
                     <?php if ($msg['type'] === 'error'): ?><span class="dashicons dashicons-warning"></span><?php endif; ?>
                     <?php if ($msg['type'] === 'updated'): ?><span class="dashicons dashicons-yes"></span><?php endif; ?>
                     <?php echo wp_kses_post($msg['message']); ?>
@@ -81,7 +81,7 @@ settings_errors('swiftchatswc_options');
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
-    <nav class="nav-tab-wrapper swiftchats-tabs">
+    <nav class="nav-tab-wrapper WBWWA-tabs">
         <?php
         $tabs = array(
             'general' => array('icon' => 'dashicons-admin-generic', 'label' => 'General'),
@@ -92,7 +92,7 @@ settings_errors('swiftchatswc_options');
         foreach ($tabs as $tab_id => $tab) {
             $active_class = ($current_tab === $tab_id) ? 'nav-tab-active' : '';
             printf(
-                '<a href="?page=swiftchatswc-settings&tab=%s" class="nav-tab %s"><span class="dashicons %s"></span> %s</a>',
+                '<a href="?page=WBWWAwc-settings&tab=%s" class="nav-tab %s"><span class="dashicons %s"></span> %s</a>',
                 esc_attr($tab_id),
                 esc_attr($active_class),
                 esc_attr($tab['icon']),
@@ -101,21 +101,21 @@ settings_errors('swiftchatswc_options');
         }
         ?>
     </nav>
-    <div class="swiftchats-content">
-        <?php settings_errors('swiftchatswc_messages'); ?>
+    <div class="WBWWA-content">
+        <?php settings_errors('WBWWAwc_messages'); ?>
         <form method="post" action="">
-            <?php wp_nonce_field('swiftchatswc_save_settings', 'swiftchatswc_nonce'); ?>
+            <?php wp_nonce_field('WBWWAwc_save_settings', 'WBWWAwc_nonce'); ?>
             <?php
-            echo '<input type="hidden" name="swiftchatswc_current_tab" value="' . esc_attr($current_tab) . '">';
-            $messages = get_settings_errors('swiftchatswc_options');
+            echo '<input type="hidden" name="WBWWAwc_current_tab" value="' . esc_attr($current_tab) . '">';
+            $messages = get_settings_errors('WBWWAwc_options');
             switch ($current_tab) {
                 case 'general':
                     ?>
-                    <div class="swiftchats-card">
+                    <div class="WBWWA-card">
                         <?php if ($messages): ?>
-                        <div class="swiftchats-message-card">
+                        <div class="WBWWA-message-card">
                             <?php foreach ($messages as $msg): ?>
-                                <div class="swiftchats-message swiftchats-message-<?php echo esc_attr($msg['type']); ?>">
+                                <div class="WBWWA-message WBWWA-message-<?php echo esc_attr($msg['type']); ?>">
                                     <?php if ($msg['type'] === 'error'): ?><span class="dashicons dashicons-warning"></span><?php endif; ?>
                                     <?php if ($msg['type'] === 'updated'): ?><span class="dashicons dashicons-yes"></span><?php endif; ?>
                                     <?php echo wp_kses_post($msg['message']); ?>
@@ -127,9 +127,9 @@ settings_errors('swiftchatswc_options');
                         <div class="form-field phone-field">
                             <label for="business_phone">Business Phone</label>
                             <div class="phone-input-group">
-                                <select id="country_code" name="swiftchatswc_options[country_code]">
+                                <select id="country_code" name="WBWWAwc_options[country_code]">
                                     <?php
-                                    $country_codes = swiftchatswc_get_country_codes();
+                                    $country_codes = WBWWAwc_get_country_codes();
                                     foreach ($country_codes as $code => $label) {
                                         printf(
                                             '<option value="%s" %s>%s</option>',
@@ -140,7 +140,7 @@ settings_errors('swiftchatswc_options');
                                     }
                                     ?>
                                 </select>
-                                <input type="tel" id="business_phone" name="swiftchatswc_options[business_phone]" 
+                                <input type="tel" id="business_phone" name="WBWWAwc_options[business_phone]" 
                                        value="<?php echo esc_attr($options['business_phone'] ?? ''); ?>"
                                        pattern="^[0-9]{1,14}$"
                                        placeholder="Enter phone number without country code" />
@@ -153,11 +153,11 @@ settings_errors('swiftchatswc_options');
                     break;
                 case 'woocommerce':
                     ?>
-                    <div class="swiftchats-card">
+                    <div class="WBWWA-card">
                         <?php if ($messages): ?>
-                        <div class="swiftchats-message-card">
+                        <div class="WBWWA-message-card">
                             <?php foreach ($messages as $msg): ?>
-                                <div class="swiftchats-message swiftchats-message-<?php echo esc_attr($msg['type']); ?>">
+                                <div class="WBWWA-message WBWWA-message-<?php echo esc_attr($msg['type']); ?>">
                                     <?php if ($msg['type'] === 'error'): ?><span class="dashicons dashicons-warning"></span><?php endif; ?>
                                     <?php if ($msg['type'] === 'updated'): ?><span class="dashicons dashicons-yes"></span><?php endif; ?>
                                     <?php echo wp_kses_post($msg['message']); ?>
@@ -168,20 +168,20 @@ settings_errors('swiftchatswc_options');
                         <h2>WooCommerce Settings</h2>
                         <div class="form-field checkbox-field">
                             <label for="enable_notifications">Enable Notifications</label>
-                            <input type="checkbox" id="enable_notifications" name="swiftchatswc_options[enable_notifications]" 
+                            <input type="checkbox" id="enable_notifications" name="WBWWAwc_options[enable_notifications]" 
                                    value="1" <?php checked($options['enable_notifications'] ?? '', 1); ?> />
                         </div>
 
                         <div class="form-field checkbox-field with-block-description">
                             <label for="enable_abandoned_cart">Enable Abandoned Cart</label>
-                            <input type="checkbox" id="enable_abandoned_cart" name="swiftchatswc_options[enable_abandoned_cart]"
+                            <input type="checkbox" id="enable_abandoned_cart" name="WBWWAwc_options[enable_abandoned_cart]"
                                    value="1" <?php checked($options['enable_abandoned_cart'] ?? '', 1); ?> />
                             <p class="description">Enable this to send a message to customers who abandon their checkout.</p>
                         </div>
 
                         <div class="form-field">
                             <label for="abandoned_cart_timeout">Cart Timeout (minutes)</label>
-                            <input type="number" id="abandoned_cart_timeout" name="swiftchatswc_options[abandoned_cart_timeout]"
+                            <input type="number" id="abandoned_cart_timeout" name="WBWWAwc_options[abandoned_cart_timeout]"
                                    value="<?php echo esc_attr($options['abandoned_cart_timeout'] ?? '30'); ?>" min="1" />
                             <p class="description">The time in minutes after which a cart is considered abandoned.</p>
                         </div>
@@ -190,11 +190,11 @@ settings_errors('swiftchatswc_options');
                     break;
                 case 'widget':
                     ?>
-                    <div class="swiftchats-card">
+                    <div class="WBWWA-card">
                         <?php if ($messages): ?>
-                        <div class="swiftchats-message-card">
+                        <div class="WBWWA-message-card">
                             <?php foreach ($messages as $msg): ?>
-                                <div class="swiftchats-message swiftchats-message-<?php echo esc_attr($msg['type']); ?>">
+                                <div class="WBWWA-message WBWWA-message-<?php echo esc_attr($msg['type']); ?>">
                                     <?php if ($msg['type'] === 'error'): ?><span class="dashicons dashicons-warning"></span><?php endif; ?>
                                     <?php if ($msg['type'] === 'updated'): ?><span class="dashicons dashicons-yes"></span><?php endif; ?>
                                     <?php echo wp_kses_post($msg['message']); ?>
@@ -205,18 +205,18 @@ settings_errors('swiftchatswc_options');
                         <h2>Chat Widget Settings</h2>
                         <div class="form-field checkbox-field with-block-description">
                             <label for="enable_widget">Enable Chat Widget</label>
-                            <input type="checkbox" id="enable_widget" name="swiftchatswc_options[enable_widget]" 
+                            <input type="checkbox" id="enable_widget" name="WBWWAwc_options[enable_widget]" 
                                    value="1" <?php checked($options['enable_widget'] ?? '', 1); ?> />
                             <p class="description">Show a WhatsApp chat button on your website that visitors can click to start a conversation.</p>
                         </div>
                         <div class="form-field">
                             <label for="widget_message">Default Message</label>
-                            <textarea id="widget_message" name="swiftchatswc_options[widget_message]" rows="3"><?php echo esc_textarea($options['widget_message'] ?? 'Hello! I have a question about your products.'); ?></textarea>
+                            <textarea id="widget_message" name="WBWWAwc_options[widget_message]" rows="3"><?php echo esc_textarea($options['widget_message'] ?? 'Hello! I have a question about your products.'); ?></textarea>
                             <p class="description">This message will be pre-filled when customers click the WhatsApp button.</p>
                         </div>
                         <div class="form-field">
                             <label for="widget_position">Widget Position</label>
-                            <select id="widget_position" name="swiftchatswc_options[widget_position]">
+                            <select id="widget_position" name="WBWWAwc_options[widget_position]">
                                 <option value="right" <?php selected($options['widget_position'] ?? 'right', 'right'); ?>>Bottom Right</option>
                                 <option value="left" <?php selected($options['widget_position'] ?? 'right', 'left'); ?>>Bottom Left</option>
                             </select>
@@ -225,9 +225,9 @@ settings_errors('swiftchatswc_options');
                         <div class="form-field phone-field">
                             <label for="widget_phone">Widget Phone Number</label>
                             <div class="phone-input-group">
-                                <select id="widget_country_code" name="swiftchatswc_options[widget_country_code]">
+                                <select id="widget_country_code" name="WBWWAwc_options[widget_country_code]">
                                     <?php
-                                    $country_codes = swiftchatswc_get_country_codes();
+                                    $country_codes = WBWWAwc_get_country_codes();
                                     foreach ($country_codes as $code => $label) {
                                         printf(
                                             '<option value="%s" %s>%s</option>',
@@ -238,7 +238,7 @@ settings_errors('swiftchatswc_options');
                                     }
                                     ?>
                                 </select>
-                                <input type="tel" id="widget_phone" name="swiftchatswc_options[widget_phone]" 
+                                <input type="tel" id="widget_phone" name="WBWWAwc_options[widget_phone]" 
                                        value="<?php echo esc_attr($options['widget_phone'] ?? ''); ?>"
                                        pattern="^[0-9]{1,14}$"
                                        placeholder="Enter phone number without country code" />
@@ -250,11 +250,11 @@ settings_errors('swiftchatswc_options');
                     break;
                 case 'api':
                     ?>
-                    <div class="swiftchats-card">
+                    <div class="WBWWA-card">
                         <?php if ($messages): ?>
-                        <div class="swiftchats-message-card">
+                        <div class="WBWWA-message-card">
                             <?php foreach ($messages as $msg): ?>
-                                <div class="swiftchats-message swiftchats-message-<?php echo esc_attr($msg['type']); ?>">
+                                <div class="WBWWA-message WBWWA-message-<?php echo esc_attr($msg['type']); ?>">
                                     <?php if ($msg['type'] === 'error'): ?><span class="dashicons dashicons-warning"></span><?php endif; ?>
                                     <?php if ($msg['type'] === 'updated'): ?><span class="dashicons dashicons-yes"></span><?php endif; ?>
                                     <?php echo wp_kses_post($msg['message']); ?>
@@ -265,7 +265,7 @@ settings_errors('swiftchatswc_options');
                         <h2>API Settings</h2>
                         <div class="form-field">
                             <label for="api_key">API Key</label>
-                            <input type="password" id="api_key" name="swiftchatswc_options[api_key]" 
+                            <input type="password" id="api_key" name="WBWWAwc_options[api_key]" 
                                    value="<?php echo esc_attr($options['api_key'] ?? ''); ?>" />
                         </div>
                     </div>
@@ -278,11 +278,11 @@ settings_errors('swiftchatswc_options');
     </div>
 </div>
 <style>
-.swiftchats-admin {
+.WBWWA-admin {
     max-width: 1100px;
     margin: 30px auto;
 }
-.swiftchats-hero-card {
+.WBWWA-hero-card {
     display: flex;
     align-items: center;
     background: #fff;
@@ -294,7 +294,7 @@ settings_errors('swiftchatswc_options');
     gap: 28px;
     flex-wrap: wrap;
 }
-.swiftchats-hero-card .hero-icon {
+.WBWWA-hero-card .hero-icon {
     font-size: 48px;
     color: #25d366;
     background: #eafbe7;
@@ -306,18 +306,18 @@ settings_errors('swiftchatswc_options');
     justify-content: center;
     box-shadow: 0 2px 8px rgba(37,211,102,0.07);
 }
-.swiftchats-hero-card .hero-content {
+.WBWWA-hero-card .hero-content {
     flex: 1 1 300px;
     min-width: 220px;
 }
-.swiftchats-hero-card h1 {
+.WBWWA-hero-card h1 {
     margin: 0 0 8px 0;
     font-size: 2.1rem;
     font-weight: 700;
     color: #1d2327;
     letter-spacing: -1px;
 }
-.swiftchats-hero-card .hero-subtitle {
+.WBWWA-hero-card .hero-subtitle {
     margin: 0;
     color: #4a5568;
     font-size: 1.08rem;
@@ -326,7 +326,7 @@ settings_errors('swiftchatswc_options');
 }
 
 /* Modern Tabs Design */
-.swiftchats-tabs {
+.WBWWA-tabs {
     display: flex;
     gap: 0;
     background: #fff;
@@ -337,7 +337,7 @@ settings_errors('swiftchatswc_options');
     border: 1px solid #f0f0f0;
     overflow-x: auto;
 }
-.swiftchats-tabs .nav-tab {
+.WBWWA-tabs .nav-tab {
     display: flex;
     align-items: center;
     gap: 7px;
@@ -355,22 +355,22 @@ settings_errors('swiftchatswc_options');
     outline: none;
     cursor: pointer;
 }
-.swiftchats-tabs .nav-tab .dashicons {
+.WBWWA-tabs .nav-tab .dashicons {
     font-size: 20px;
     color: #25d366;
     margin-right: 2px;
 }
-.swiftchats-tabs .nav-tab-active {
+.WBWWA-tabs .nav-tab-active {
     color: #25d366;
     border-bottom: 3.5px solid #25d366;
     z-index: 2;
 }
-.swiftchats-tabs .nav-tab:not(.nav-tab-active):hover {
+.WBWWA-tabs .nav-tab:not(.nav-tab-active):hover {
     background: #f7fafd;
     color: #25d366;
 }
 
-.swiftchats-card {
+.WBWWA-card {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.07);
@@ -470,7 +470,7 @@ settings_errors('swiftchatswc_options');
 .form-field.phone-field .description {
     margin-top: 8px;
 }
-.swiftchats-message-card {
+.WBWWA-message-card {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.07);
@@ -479,7 +479,7 @@ settings_errors('swiftchatswc_options');
     border: 1px solid #f0f0f0;
     max-width: 100%;
 }
-.swiftchats-message {
+.WBWWA-message {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -489,17 +489,17 @@ settings_errors('swiftchatswc_options');
     padding: 12px 0 8px 0;
     border-radius: 7px;
 }
-.swiftchats-message-error {
+.WBWWA-message-error {
     color: #c62828;
     background: #fbeaea;
     border: 1px solid #f5bdbd;
 }
-.swiftchats-message-updated {
+.WBWWA-message-updated {
     color: #2e7d32;
     background: #eafbe7;
     border: 1px solid #b6e2c1;
 }
-.swiftchats-message .dashicons {
+.WBWWA-message .dashicons {
     font-size: 20px;
     margin-right: 6px;
     vertical-align: middle;

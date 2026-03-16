@@ -1,13 +1,13 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-class SwiftChatsWC_API_Handler {
+class WBWWAWC_API_Handler {
     private $base_url;
     private $api_key;
 
     public function __construct() {
-        $options = get_option('swiftchatswc_options', array());
-        $this->base_url = defined('SWIFTCHATSWC_API_BASE_URL') ? SWIFTCHATSWC_API_BASE_URL : '';
+        $options = get_option('WBWWAwc_options', array());
+        $this->base_url = defined('WBWWAWC_API_BASE_URL') ? WBWWAWC_API_BASE_URL : '';
         $this->api_key = isset($options['api_key']) && is_string($options['api_key']) ? $options['api_key'] : '';
     }
 
@@ -116,14 +116,14 @@ class SwiftChatsWC_API_Handler {
 
     // Cache templates for 5 minutes to avoid too many API calls
     public function get_cached_templates() {
-        $cached = get_transient('swiftchatswc_templates');
+        $cached = get_transient('WBWWAwc_templates');
         if ($cached !== false) {
             return $cached;
         }
 
         $templates = $this->get_templates();
         if (!is_wp_error($templates)) {
-            set_transient('swiftchatswc_templates', $templates, 5 * MINUTE_IN_SECONDS);
+            set_transient('WBWWAwc_templates', $templates, 5 * MINUTE_IN_SECONDS);
         }
 
         return $templates;
@@ -134,7 +134,7 @@ class SwiftChatsWC_API_Handler {
             return false;
         }
         // Format phone number
-        $options = get_option('swiftchatswc_options', array());
+        $options = get_option('WBWWAwc_options', array());
         $phone_trimmed = trim((string)$phone);
         $final_phone = '';
 
@@ -298,9 +298,9 @@ class SwiftChatsWC_API_Handler {
             'phone' => (string)$to,
             'template' => $formatted_template
         );
-        // Log the formatted payload to swiftchats-debug.log
+        // Log the formatted payload to WBWWA-debug.log
         $log_message = '[send_template_with_metadata] ' . date('[Y-m-d H:i:s] ') . print_r($payload, true) . PHP_EOL;
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
+        file_put_contents(dirname(__FILE__) . '/WBWWA-debug.log', $log_message, FILE_APPEND);
         $response = wp_remote_post(
             trailingslashit($this->base_url) . 'api/send/template',
             array(
@@ -314,7 +314,7 @@ class SwiftChatsWC_API_Handler {
             )
         );
         $log_message = '[send_template_with_metadata] ' . date('[Y-m-d H:i:s] ') . print_r($response, true) . PHP_EOL;
-        file_put_contents(dirname(__FILE__) . '/swiftchats-debug.log', $log_message, FILE_APPEND);
+        file_put_contents(dirname(__FILE__) . '/WBWWA-debug.log', $log_message, FILE_APPEND);
         return !is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200;
     }
 

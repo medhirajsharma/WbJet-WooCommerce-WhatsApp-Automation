@@ -1,4 +1,4 @@
-=== Swiftchats for WooCommerce ===  
+=== WBWWA for WooCommerce ===  
 Contributors: Axis96 Digital  
 Tags: WhatsApp, WooCommerce, Order Alerts, Chat Support, Messaging Widget  
 Requires at least: 4.7  
@@ -8,11 +8,11 @@ Requires PHP: 8.2
 License: GPLv2 or later  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Deliver WhatsApp order alerts and offer real-time chat assistance on your WooCommerce store using Swiftchats.
+Deliver WhatsApp order alerts and offer real-time chat assistance on your WooCommerce store using WBWWA.
 
 == Description ==
 
-Swiftchats for WooCommerce bridges the gap between store owners and customers by sending instant WhatsApp notifications for order updates and embedding a live chat widget directly on your site—making customer support quick, easy, and accessible.
+WBWWA for WooCommerce bridges the gap between store owners and customers by sending instant WhatsApp notifications for order updates and embedding a live chat widget directly on your site—making customer support quick, easy, and accessible.
 
 == Core Features ==
 
@@ -23,7 +23,7 @@ Swiftchats for WooCommerce bridges the gap between store owners and customers by
   Create tailored messages using dynamic tags such as customer name, order ID, and total amount.
 
 - **Embedded Chat Widget**  
-  Place a sleek Swiftchats widget on your website to handle customer queries in real time.
+  Place a sleek WBWWA widget on your website to handle customer queries in real time.
 
 - **Flexible Order Status Handling**  
   Assign specific messages to different order stages for improved clarity.
@@ -35,14 +35,14 @@ Swiftchats for WooCommerce bridges the gap between store owners and customers by
 
 1. Upload the plugin to the `/wp-content/plugins/` directory  
 2. Activate it via the WordPress Plugins menu  
-3. Navigate to WooCommerce → Swiftchats Settings  
-4. Enter your API key from your Swiftchats account  
+3. Navigate to WooCommerce → WBWWA Settings  
+4. Enter your API key from your WBWWA account  
 5. Customize your message templates  
 6. Enable and configure the chat widget as needed
 
 == Frequently Asked Questions ==
 
-**Is a Swiftchats account required?**  
+**Is a WBWWA account required?**  
 Yes. You'll need to register to access your API key.
 
 **Why aren’t my messages sending?**  
@@ -50,9 +50,9 @@ Make sure your templates include all required placeholders and that Debug Mode i
 
 == External Services ==
 
-This plugin uses the Swiftchats API to provide messaging and live chat capabilities.
+This plugin uses the WBWWA API to provide messaging and live chat capabilities.
 
-- **Service Name:** Swiftchats API  
+- **Service Name:** WBWWA API  
 - **Functionality:** Sends WhatsApp messages and powers chat widget  
 - **Data Shared:** Customer details (name, number), order ID, and status  
 - **Data Trigger:** On order creation or status change

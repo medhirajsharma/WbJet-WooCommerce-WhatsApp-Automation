@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-function swiftchatswc_get_country_codes() {
+function WBWWAwc_get_country_codes() {
     return array(
         '+93' => 'Afghanistan (+93)',
         '+355' => 'Albania (+355)',

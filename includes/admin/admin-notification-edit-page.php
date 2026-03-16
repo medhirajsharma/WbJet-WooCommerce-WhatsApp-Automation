@@ -1,15 +1,15 @@
 <?php
-// This file renders the Add/Edit Notification admin page for SwiftChats
+// This file renders the Add/Edit Notification admin page for WBWWA
 if (!defined('ABSPATH')) exit;
 global $plugin_page, $parent_file, $wpdb;
-$plugin_page = 'swiftchatswc-notifications';
-$parent_file = 'swiftchatswc';
-$table_name = $wpdb->prefix . 'swiftchats_notifications';
+$plugin_page = 'WBWWAwc-notifications';
+$parent_file = 'WBWWAwc';
+$table_name = $wpdb->prefix . 'WBWWA_notifications';
 require_once plugin_dir_path(__FILE__) . '../api-handler.php';
-$api_handler = new SwiftChatsWC_API_Handler();
+$api_handler = new WBWWAWC_API_Handler();
 $templates = $api_handler->get_cached_templates();
 if (is_wp_error($templates)) {
-    wp_redirect(admin_url('admin.php?page=swiftchatswc-notifications'));
+    wp_redirect(admin_url('admin.php?page=WBWWAwc-notifications'));
     exit;
 }
 // --- POST handling for add/edit notification ---
@@ -18,10 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array
         $_POST['order_status'],
         $_POST['message_template'],
         $_POST['_wpnonce']) ||
-        !wp_verify_nonce($_POST['_wpnonce'], 'swiftchats_notification_nonce')
+        !wp_verify_nonce($_POST['_wpnonce'], 'WBWWA_notification_nonce')
     ) {
-        add_settings_error('swiftchatswc_messages', 'nonce', 'Security check failed. Please try again.', 'error');
-        if (function_exists('error_log')) error_log('SwiftChats Notification Form Error: ' . print_r($_POST, true));
+        add_settings_error('WBWWAwc_messages', 'nonce', 'Security check failed. Please try again.', 'error');
+        if (function_exists('error_log')) error_log('WBWWA Notification Form Error: ' . print_r($_POST, true));
     } else {
         $order_status = sanitize_text_field($_POST['order_status']);
         $message_template = sanitize_text_field($_POST['message_template']);
@@ -49,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array
                 'updated_at' => current_time('mysql'),
             ]);
             if ($result) {
-                wp_redirect(admin_url('admin.php?page=swiftchatswc-notifications&msg=added'));
+                wp_redirect(admin_url('admin.php?page=WBWWAwc-notifications&msg=added'));
                 exit;
             } else {
-                add_settings_error('swiftchatswc_messages', 'db', 'Failed to add notification.', 'error');
+                add_settings_error('WBWWAwc_messages', 'db', 'Failed to add notification.', 'error');
             }
         } elseif ($_POST['action'] === 'edit' && !empty($_POST['notification_id'])) {
             $notification_id = absint($_POST['notification_id']);
@@ -66,10 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array
                 'updated_at' => current_time('mysql'),
             ], [ 'id' => $notification_id ]);
             if ($result !== false) {
-                wp_redirect(admin_url('admin.php?page=swiftchatswc-notifications&msg=updated'));
+                wp_redirect(admin_url('admin.php?page=WBWWAwc-notifications&msg=updated'));
                 exit;
             } else {
-                add_settings_error('swiftchatswc_messages', 'db', 'Failed to update notification.', 'error');
+                add_settings_error('WBWWAwc_messages', 'db', 'Failed to update notification.', 'error');
             }
         }
     }
@@ -87,9 +87,9 @@ if (isset($_GET['id'])) {
 $order_statuses = wc_get_order_statuses();
 $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
 ?>
-<div class="wrap swiftchats-admin">
-    <div class="swiftchats-layout">
-        <div class="swiftchats-main">
+<div class="wrap WBWWA-admin">
+    <div class="WBWWA-layout">
+        <div class="WBWWA-main">
             <div class="trigger-form-premium-card">
                 <div class="trigger-form-hero">
                     <span class="hero-icon-premium"><span class="dashicons dashicons-format-chat"></span></span>
@@ -99,7 +99,7 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
                     </div>
                 </div>
                 <form method="post" action="" autocomplete="off">
-                    <?php wp_nonce_field('swiftchats_notification_nonce'); ?>
+                    <?php wp_nonce_field('WBWWA_notification_nonce'); ?>
                     <input type="hidden" name="action" value="<?php echo $notification ? 'edit' : 'add'; ?>">
                     <?php if ($notification) : ?>
                         <input type="hidden" name="notification_id" value="<?php echo esc_attr($notification->id); ?>">
@@ -108,7 +108,7 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
                         <h3>Notification Details</h3>
                         <div class="form-field form-field-wide">
                             <label for="order_status" style="color: #777; font-size: 13px; line-height: 1.5;">Order Status:</label>
-                            <select name="order_status" id="order_status" required class="swiftchats-select">
+                            <select name="order_status" id="order_status" required class="WBWWA-select">
                                 <option value="" disabled <?php if (!$notification) echo 'selected'; ?>>Select Order Status</option>
                                 <?php
                                 foreach ($order_statuses as $status => $label) {
@@ -124,7 +124,7 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
                         </div>
                         <div class="form-field form-field-wide">
                             <label for="message_template">Message Template</label>
-                            <select name="message_template" id="message_template" required class="swiftchats-select">
+                            <select name="message_template" id="message_template" required class="WBWWA-select">
                                 <option value="" disabled <?php if (!$notification) echo 'selected'; ?>>Select Template</option>
                                 <?php
                                 foreach ($templates as $template) {
@@ -160,12 +160,12 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
                     </div>
                     <div class="sticky-action-bar-premium">
                         <button type="submit" class="button button-primary">Save Notification</button>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-notifications')); ?>" class="button">Cancel</a>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-notifications')); ?>" class="button">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="swiftchats-sidebar">
+        <div class="WBWWA-sidebar">
             <div class="wa-device-frame">
                 <div class="wa-header-bar">
                     <span class="wa-logo"><span class="dashicons dashicons-whatsapp"></span></span>
@@ -183,9 +183,9 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
         </div>
     </div>
     <style>
-    .swiftchats-layout { display: flex; gap: 20px; margin-top: 20px; }
-    .swiftchats-main { flex: 1; }
-    .swiftchats-sidebar { width: 350px; }
+    .WBWWA-layout { display: flex; gap: 20px; margin-top: 20px; }
+    .WBWWA-main { flex: 1; }
+    .WBWWA-sidebar { width: 350px; }
     .form-field { margin-bottom: 20px; }
     .form-field label { display: block; margin-bottom: 8px; font-weight: 600; }
     .form-field input[type="text"],
@@ -398,7 +398,7 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
             border-radius: 0 0 10px 10px;
         }
     }
-    .swiftchats-select {
+    .WBWWA-select {
         width: 100%;
         padding: 14px 38px 14px 18px;
         font-size: 1.08rem;
@@ -411,7 +411,7 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
         box-shadow: 0 1.5px 4px rgba(37,211,102,0.04);
         transition: border-color 0.18s, box-shadow 0.18s;
     }
-    .swiftchats-select:focus {
+    .WBWWA-select:focus {
         border-color: #25d366;
         box-shadow: 0 2px 8px rgba(37,211,102,0.13);
     }
@@ -485,7 +485,7 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
                     mappingsHtml += `
                         <div class="variable-mapping">
                             <label>Header Variable {{${variable}}}</label>
-                            <select name="variable_mapping[header][${variable}]" class="variable-select swiftchats-select">
+                            <select name="variable_mapping[header][${variable}]" class="variable-select WBWWA-select">
                                 <option value="">Select Variable</option>
                                 ${Object.entries(availableVariables).map(([value, label]) => 
                                     `<option value="${value}" ${savedValue === value ? 'selected' : ''}>${label}</option>`
@@ -504,7 +504,7 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
                     mappingsHtml += `
                         <div class="variable-mapping">
                             <label>Body Variable {{${variable}}}</label>
-                            <select name="variable_mapping[body][${variable}]" class="variable-select swiftchats-select">
+                            <select name="variable_mapping[body][${variable}]" class="variable-select WBWWA-select">
                                 <option value="">Select Variable</option>
                                 ${Object.entries(availableVariables).map(([value, label]) => 
                                     `<option value="${value}" ${savedValue === value ? 'selected' : ''}>${label}</option>`
@@ -527,4 +527,4 @@ $page_title = $notification ? 'Edit Notification' : 'Add New Notification';
     });
     </script>
 </div>
-<?php settings_errors('swiftchatswc_messages'); ?> 
+<?php settings_errors('WBWWAwc_messages'); ?> 

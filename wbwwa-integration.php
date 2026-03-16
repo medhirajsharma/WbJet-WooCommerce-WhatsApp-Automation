@@ -1,10 +1,10 @@
 <?php
 /*
- * Plugin Name: wbjet-woocommerce-whatsapp-automation
+ * Plugin Name: WbJet WooCommerce WhatsApp Automation
  * Description: Automated Order Updates – Notify customers of order status changes (new, processing, completed, etc.).
 Real-Time WhatsApp Alerts – Deliver instant notifications directly to your customer’s WhatsApp.
-Chat Widget Support – Enable direct communication from your Wordpress site to your Swiftchats inbox.
-Easy Setup – Seamlessly install and connect with your existing Swiftchats and WooCommerce setup.
+Chat Widget Support – Enable direct communication from your Wordpress site to your WBWWA inbox.
+Easy Setup – Seamlessly install and connect with your existing WBWWA and WooCommerce setup.
 Reduce Cart Abandonment – Engage customers at the right time with proactive messages.
 Fully Compatible – Works with the latest versions of WooCommerce and WordPress.
  * Version: 1.0.0
@@ -19,27 +19,27 @@ if (! defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('SWIFTCHATS_WC_VERSION', '1.0.1');
-define('SWIFTCHATS_WC_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('SWIFTCHATS_WC_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('SWIFTCHATSWC_API_BASE_URL', 'https://app.wbjet.com');
-define('SWIFTCHATS_PLUGIN_NAME', 'wbjet-woocommerce-whatsapp-automation');
+define('WBWWA_WC_VERSION', '1.0.1');
+define('WBWWA_WC_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('WBWWA_WC_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('WBWWAWC_API_BASE_URL', 'https://app.wbjet.com');
+define('WBWWA_PLUGIN_NAME', 'WbJet WooCommerce WhatsApp Automation');
 
 // Include required files
-require_once SWIFTCHATS_WC_PLUGIN_DIR . 'includes/admin-menu.php';
-require_once SWIFTCHATS_WC_PLUGIN_DIR . 'includes/chat-widget.php';
-require_once SWIFTCHATS_WC_PLUGIN_DIR . 'includes/country-codes.php';
-require_once SWIFTCHATS_WC_PLUGIN_DIR . 'includes/trigger-handler.php';
+require_once WBWWA_WC_PLUGIN_DIR . 'includes/admin-menu.php';
+require_once WBWWA_WC_PLUGIN_DIR . 'includes/chat-widget.php';
+require_once WBWWA_WC_PLUGIN_DIR . 'includes/country-codes.php';
+require_once WBWWA_WC_PLUGIN_DIR . 'includes/trigger-handler.php';
 // Activation hook
-register_activation_hook(__FILE__, 'swiftchatswc_activate');
+register_activation_hook(__FILE__, 'WBWWAwc_activate');
 
-function swiftchatswc_create_tables()
+function WBWWAwc_create_tables()
 {
     global $wpdb;
     $charset_collate = $wpdb->get_charset_collate();
 
     // Triggers table
-    $table_name = $wpdb->prefix . 'swiftchats_triggers';
+    $table_name = $wpdb->prefix . 'WBWWA_triggers';
     $sql        = "CREATE TABLE IF NOT EXISTS $table_name (
         id bigint(20) NOT NULL AUTO_INCREMENT,
         order_status varchar(50) NOT NULL,
@@ -57,7 +57,7 @@ function swiftchatswc_create_tables()
     dbDelta($sql);
 
     // Notifications table
-    $notifications_table = $wpdb->prefix . 'swiftchats_notifications';
+    $notifications_table = $wpdb->prefix . 'WBWWA_notifications';
     $sql_notifications   = "CREATE TABLE IF NOT EXISTS $notifications_table (
         id bigint(20) NOT NULL AUTO_INCREMENT,
         order_status varchar(50) NOT NULL,
@@ -73,7 +73,7 @@ function swiftchatswc_create_tables()
     dbDelta($sql_notifications);
 
     // Abandoned cart sequence table
-    $sequence_table_name = $wpdb->prefix . 'swiftchats_abandoned_cart_sequence';
+    $sequence_table_name = $wpdb->prefix . 'WBWWA_abandoned_cart_sequence';
     $sql_sequence = "CREATE TABLE IF NOT EXISTS $sequence_table_name (
         id bigint(20) NOT NULL AUTO_INCREMENT,
         trigger_id bigint(20) NOT NULL,
@@ -84,21 +84,21 @@ function swiftchatswc_create_tables()
         variable_mappings text DEFAULT NULL,
         sequence_order int NOT NULL DEFAULT 0,
         PRIMARY KEY  (id),
-        FOREIGN KEY (trigger_id) REFERENCES {$wpdb->prefix}swiftchats_triggers(id) ON DELETE CASCADE
+        FOREIGN KEY (trigger_id) REFERENCES {$wpdb->prefix}WBWWA_triggers(id) ON DELETE CASCADE
     ) $charset_collate;";
     dbDelta($sql_sequence);
 }
 
-function swiftchatswc_update_db_check()
+function WBWWAwc_update_db_check()
 {
-    if (get_option('swiftchatswc_db_version') != SWIFTCHATS_WC_VERSION) {
-        swiftchatswc_create_tables();
-        update_option('swiftchatswc_db_version', SWIFTCHATS_WC_VERSION);
+    if (get_option('WBWWAwc_db_version') != WBWWA_WC_VERSION) {
+        WBWWAwc_create_tables();
+        update_option('WBWWAwc_db_version', WBWWA_WC_VERSION);
     }
 }
-add_action('plugins_loaded', 'swiftchatswc_update_db_check');
+add_action('plugins_loaded', 'WBWWAwc_update_db_check');
 
-function swiftchatswc_activate()
+function WBWWAwc_activate()
 {
     // Set default options
     $default_options = [
@@ -113,22 +113,23 @@ function swiftchatswc_activate()
         'abandoned_cart_timeout' => 60,
     ];
 
-    swiftchatswc_create_tables();
-    add_option('swiftchatswc_options', $default_options);
-    add_option('swiftchatswc_db_version', SWIFTCHATS_WC_VERSION);
+    WBWWAwc_create_tables();
+    add_option('WBWWAwc_options', $default_options);
+    add_option('WBWWAwc_db_version', WBWWA_WC_VERSION);
 }
 
 // Deactivation hook
-register_deactivation_hook(__FILE__, 'swiftchatswc_deactivate');
+register_deactivation_hook(__FILE__, 'WBWWAwc_deactivate');
 
-function swiftchatswc_deactivate()
+function WBWWAwc_deactivate()
 {
     // Cleanup if needed
 }
 
 // Initialize plugin
-function swiftchatswc_init()
+function WBWWAwc_init()
 {
-    load_plugin_textdomain('swiftchats-wc', false, dirname(plugin_basename(__FILE__)) . '/languages');
+    load_plugin_textdomain('WBWWA-wc', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
-add_action('plugins_loaded', 'swiftchatswc_init');
+add_action('plugins_loaded', 'WBWWAwc_init');
+

@@ -1,0 +1,5 @@
+ecb2f24 working
+92ac433 feat: Enhance variable mapping for header, body, and button components in templates
+218c8a7 feat: Enable extensive debug logging for Abandoned Cart
+47d3f16 refactor: Force DB update and clean up debug logs
+7f12005 refactor(js): Use direct lookup for template metadata

@@ -1,11 +1,11 @@
 <?php
-$options = get_option('swiftchatswc_options', array());
+$options = get_option('WBWWAwc_options', array());
 $api_key = $options['api_key'] ?? '';
 $is_configured = !empty($api_key);
-$plugin_name = defined('SWIFTCHATS_PLUGIN_NAME') ? SWIFTCHATS_PLUGIN_NAME : 'SwiftChats';
+$plugin_name = defined('WBWWA_PLUGIN_NAME') ? WBWWA_PLUGIN_NAME : 'WBWWA';
 ?>
-<div class="wrap swiftchats-admin-home">
-    <div class="swiftchats-hero">
+<div class="wrap WBWWA-admin-home">
+    <div class="WBWWA-hero">
         <div class="hero-icon"><span class="dashicons dashicons-whatsapp"></span></div>
         <div class="hero-content">
             <h1><?php echo esc_html($plugin_name); ?> for WooCommerce</h1>
@@ -14,30 +14,30 @@ $plugin_name = defined('SWIFTCHATS_PLUGIN_NAME') ? SWIFTCHATS_PLUGIN_NAME : 'Swi
     </div>
 
     <?php if (!$is_configured): ?>
-        <div class="swiftchats-get-started">
+        <div class="WBWWA-get-started">
             <h2>Get Started</h2>
             <ol class="get-started-list">
-                <li><span class="dashicons dashicons-admin-network"></span> <strong>Configure your API Key</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-settings&tab=api')); ?>">API Settings</a></li>
-                <li><span class="dashicons dashicons-admin-generic"></span> <strong>Set your business phone</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-settings&tab=general')); ?>">General Settings</a></li>
-                <li><span class="dashicons dashicons-cart"></span> <strong>Enable WooCommerce notifications</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-settings&tab=woocommerce')); ?>">WooCommerce Settings</a></li>
-                <li><span class="dashicons dashicons-format-chat"></span> <strong>Customize your chat widget</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-settings&tab=widget')); ?>">Chat Widget</a></li>
+                <li><span class="dashicons dashicons-admin-network"></span> <strong>Configure your API Key</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-settings&tab=api')); ?>">API Settings</a></li>
+                <li><span class="dashicons dashicons-admin-generic"></span> <strong>Set your business phone</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-settings&tab=general')); ?>">General Settings</a></li>
+                <li><span class="dashicons dashicons-cart"></span> <strong>Enable WooCommerce notifications</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-settings&tab=woocommerce')); ?>">WooCommerce Settings</a></li>
+                <li><span class="dashicons dashicons-format-chat"></span> <strong>Customize your chat widget</strong> in <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-settings&tab=widget')); ?>">Chat Widget</a></li>
             </ol>
             <div class="get-started-tip"><span class="dashicons dashicons-info"></span> Complete the steps above to unlock all features.</div>
         </div>
     <?php endif; ?>
 
-    <div class="swiftchats-modules">
-        <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-triggers')); ?>" class="module-card">
+    <div class="WBWWA-modules">
+        <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-triggers')); ?>" class="module-card">
             <span class="dashicons dashicons-controls-repeat"></span>
             <h3>Triggers</h3>
             <p>Automate WhatsApp messages for order status, abandoned carts, and more.</p>
         </a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-notifications')); ?>" class="module-card">
+        <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-notifications')); ?>" class="module-card">
             <span class="dashicons dashicons-megaphone"></span>
             <h3>Notifications</h3>
             <p>Send WhatsApp notifications to your business for new orders and status changes.</p>
         </a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=swiftchatswc-settings')); ?>" class="module-card">
+        <a href="<?php echo esc_url(admin_url('admin.php?page=WBWWAwc-settings')); ?>" class="module-card">
             <span class="dashicons dashicons-admin-generic"></span>
             <h3>Settings</h3>
             <p>Configure API, business info, WooCommerce, and chat widget settings.</p>
@@ -46,11 +46,11 @@ $plugin_name = defined('SWIFTCHATS_PLUGIN_NAME') ? SWIFTCHATS_PLUGIN_NAME : 'Swi
 </div>
 
 <style>
-.swiftchats-admin-home {
+.WBWWA-admin-home {
     max-width: 1100px;
     margin: 30px auto;
 }
-.swiftchats-hero {
+.WBWWA-hero {
     display: flex;
     align-items: center;
     background: white;
@@ -61,7 +61,7 @@ $plugin_name = defined('SWIFTCHATS_PLUGIN_NAME') ? SWIFTCHATS_PLUGIN_NAME : 'Swi
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     overflow: hidden;
 }
-.swiftchats-hero::before {
+.WBWWA-hero::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -70,41 +70,41 @@ $plugin_name = defined('SWIFTCHATS_PLUGIN_NAME') ? SWIFTCHATS_PLUGIN_NAME : 'Swi
     z-index: 0;
     pointer-events: none;
 }
-.swiftchats-hero .hero-icon, .swiftchats-hero .hero-content {
+.WBWWA-hero .hero-icon, .WBWWA-hero .hero-content {
     position: relative;
     z-index: 1;
 }
-.swiftchats-hero .hero-icon {
+.WBWWA-hero .hero-icon {
     font-size: 64px;
     margin-right: 30px;
     display: flex;
     align-items: center;
 }
-.swiftchats-hero .dashicons-whatsapp {
+.WBWWA-hero .dashicons-whatsapp {
     font-size: 64px;
     width: 64px;
     height: 64px;
     color: green;
 }
-.swiftchats-hero .hero-content h1 {
+.WBWWA-hero .hero-content h1 {
     margin: 0 0 10px 0;
     font-size: 2.5rem;
     font-weight: 700;
     letter-spacing: -1px;
 }
-.swiftchats-hero .hero-tagline {
+.WBWWA-hero .hero-tagline {
     font-size: 1.2rem;
     margin: 0;
     opacity: 0.95;
 }
-.swiftchats-get-started {
+.WBWWA-get-started {
     background: #fff3cd;
     border-left: 5px solid #ffe066;
     border-radius: 8px;
     padding: 25px 30px;
     margin-bottom: 30px;
 }
-.swiftchats-get-started h2 {
+.WBWWA-get-started h2 {
     margin-top: 0;
     color: #856404;
 }
@@ -137,7 +137,7 @@ $plugin_name = defined('SWIFTCHATS_PLUGIN_NAME') ? SWIFTCHATS_PLUGIN_NAME : 'Swi
     color: #856404;
     font-size: 18px;
 }
-.swiftchats-modules {
+.WBWWA-modules {
     display: flex;
     gap: 30px;
     margin-top: 10px;
@@ -186,19 +186,19 @@ $plugin_name = defined('SWIFTCHATS_PLUGIN_NAME') ? SWIFTCHATS_PLUGIN_NAME : 'Swi
     opacity: 0.92;
 }
 @media (max-width: 900px) {
-    .swiftchats-modules {
+    .WBWWA-modules {
         flex-direction: column;
         gap: 18px;
     }
     .module-card {
         max-width: 100%;
     }
-    .swiftchats-hero {
+    .WBWWA-hero {
         flex-direction: column;
         align-items: flex-start;
         padding: 30px 18px 18px 18px;
     }
-    .swiftchats-hero .hero-icon {
+    .WBWWA-hero .hero-icon {
         margin-bottom: 18px;
         margin-right: 0;
     }
