@@ -19,6 +19,65 @@ add_action('woocommerce_cart_updated', 'WBWWAwc_maybe_schedule_abandoned_cart_ch
 add_action('WBWWAwc_check_abandoned_cart', 'WBWWAwc_process_abandoned_cart', 10, 2);
 add_action('woocommerce_checkout_order_processed', 'WBWWAwc_cancel_abandoned_cart_on_purchase', 10, 1);
 
+// Admin/Business Notifications Logic
+add_action('woocommerce_order_status_changed', 'WBWWAwc_handle_business_notification', 20, 4);
+
+function WBWWAwc_handle_business_notification($order_id, $old_status, $new_status, $order) {
+    global $wpdb;
+
+    if (empty($order_id) || empty($new_status)) {
+        return;
+    }
+
+    $options = get_option('WBWWAwc_options', []);
+    if (empty($options['enable_notifications'])) {
+        return;
+    }
+
+    // Get business phone from settings
+    $business_phone = $options['business_phone'] ?? '';
+    $country_code = $options['country_code'] ?? '';
+
+    if (empty($business_phone)) {
+        WBWWAwc_debug_log('[Business Notification] Exiting: Business phone not set in settings.');
+        return;
+    }
+
+    // Format phone number for admin (simple concatenation as it's the admin's own number)
+    if (substr($business_phone, 0, 1) !== '+') {
+        $phone_to_notify = $country_code . $business_phone;
+    } else {
+        $phone_to_notify = $business_phone;
+    }
+
+    $table_name = $wpdb->prefix . 'WBWWA_notifications';
+    $notification = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $table_name WHERE order_status = %s AND is_active = 1",
+        'wc-' . sanitize_text_field($new_status)
+    ));
+
+    if ($notification) {
+        $order_obj = wc_get_order($order_id);
+        if ($order_obj) {
+            WBWWAwc_debug_log("[Business Notification] Processing notification for status: {$new_status} to {$phone_to_notify}");
+            
+            $variable_mappings = $notification->variable_mappings ? json_decode($notification->variable_mappings, true) : [];
+            require_once plugin_dir_path(__FILE__) . 'api-handler.php';
+            $api_handler = new WBWWAWC_API_Handler();
+            $template_metadata = $notification->template_metadata ? json_decode($notification->template_metadata, true) : null;
+            
+            if ($template_metadata) {
+                $sent = $api_handler->send_template_with_metadata($phone_to_notify, $template_metadata, $variable_mappings, $order_obj);
+                if ($sent) {
+                    WBWWAwc_debug_log("[Business Notification] Success: Message sent to Admin ({$phone_to_notify})");
+                } else {
+                    WBWWAwc_debug_log("[Business Notification] Failed: API error while sending to Admin");
+                }
+            }
+        }
+    }
+}
+
 
 function WBWWAwc_handle_order_status_change($order_id, $old_status, $new_status, $order)
 {
